@@ -16,6 +16,8 @@ const obraRoutes = require("./routes/obra.routes");
 app.use("/obra", obraRoutes);
 const almacenRoutes = require("./routes/almacen.routes");
 app.use("/almacen", almacenRoutes);
+const productoRoutes = require("./routes/producto.routes");
+app.use("/producto", productoRoutes);
 
 // Ruta de prueba
 app.get("/", (req, res) => {
