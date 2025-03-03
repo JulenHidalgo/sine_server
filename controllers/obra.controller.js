@@ -24,7 +24,7 @@ const crearObra = (req, res) => {
   }
   Obra.crear(obra, (err, obraCreada) => {
     if (err) {
-      return res.status(500).json({ error: "Error insertando usuario" });
+      return res.status(500).json({ error: "Error insertando almacen" });
     }
     res.json(obraCreada);
   });
