@@ -1,11 +1,5 @@
 const db = require("../config/database");
 
-const ESTADO = Object.freeze({
-  RECIBIDO: "Recibido",
-  PARA_DEVOLVER: "Para devolver",
-  DEVUELTO: "Devuelto",
-});
-
 class Producto {
   constructor(matricula, observaciones, almacen_id, obra_ot) {
     this.matricula = matricula;
