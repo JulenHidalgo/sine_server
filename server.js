@@ -10,10 +10,12 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas
-const usuariosRoutes = require("./routes/usuario.routes");
-app.use("/usuario", usuariosRoutes);
-const obrasRoutes = require("./routes/obra.routes");
-app.use("/obra", obrasRoutes);
+const usuarioRoutes = require("./routes/usuario.routes");
+app.use("/usuario", usuarioRoutes);
+const obraRoutes = require("./routes/obra.routes");
+app.use("/obra", obraRoutes);
+const almacenRoutes = require("./routes/almacen.routes");
+app.use("/almacen", almacenRoutes);
 
 // Ruta de prueba
 app.get("/", (req, res) => {
