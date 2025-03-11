@@ -5,8 +5,16 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Configurar CORS para permitir acceso desde cualquier origen
+app.use(
+  cors({
+    origin: "*", // Permitir acceso desde cualquier dominio
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 // Middlewares
-app.use(cors());
 app.use(express.json());
 
 // Rutas
@@ -28,7 +36,7 @@ app.get("/", (req, res) => {
   res.json({ mensaje: "Servidor funcionando correctamente" });
 });
 
-// Iniciar el servidor
-app.listen(PORT, () => {
+// Iniciar el servidor en todas las interfaces
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
