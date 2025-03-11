@@ -1,13 +1,12 @@
 const Usuario = require("../models/usuario.model");
 
-// Obtener todos los usuarios
-const obtenerUsuarios = (req, res) => {
-  Usuario.obtenerTodos((err, results) => {
-    if (err) {
-      return res.status(500).json({ error: "Error obteniendo usuarios" });
-    }
-    res.json(results);
-  });
+const obtenerUsuarios = async (req, res) => {
+  try {
+    const usuarios = await Usuario.obtenerTodos();
+    res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ error: "Error obteniendo usuarios" });
+  }
 };
 
 // Obtener solo los usuarios activos
