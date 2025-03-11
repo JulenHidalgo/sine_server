@@ -15,7 +15,10 @@ class Usuario {
   // Obtener todos los usuarios
   static obtenerTodos(callback) {
     db.query("SELECT * FROM usuario", (err, results) => {
-      if (err) return callback(err, null);
+      if (err) {
+        console.error("❌ Error en la consulta SQL:", err);
+        return callback(err, null);
+      }
       const usuarios = results.map((row) => Usuario.fromRow(row));
       callback(null, usuarios);
     });
