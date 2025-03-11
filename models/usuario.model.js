@@ -12,16 +12,15 @@ class Usuario {
     return new Usuario(row.id, row.nombre, row.activo);
   }
 
-  // Obtener todos los usuarios
-  static obtenerTodos(callback) {
-    db.query("SELECT * FROM usuario", (err, results) => {
-      if (err) {
-        console.error("❌ Error en la consulta SQL:", err);
-        return callback(err, null);
-      }
-      const usuarios = results.map((row) => Usuario.fromRow(row));
-      callback(null, usuarios);
-    });
+  // ✅ USAR PROMESAS EN LA CONSULTA
+  static async obtenerTodos() {
+    try {
+      const [rows] = await db.query("SELECT * FROM usuario");
+      return rows.map((row) => Usuario.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err);
+      throw err;
+    }
   }
 
   // Obtener todos los usuarios con el atributo Activo igual a True
