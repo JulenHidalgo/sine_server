@@ -20,10 +20,12 @@ const productoRoutes = require("./routes/producto.routes");
 app.use("/producto", productoRoutes);
 const usuario_productoRoutes = require("./routes/usuario_producto.routes");
 app.use("/usuario_producto", usuario_productoRoutes);
+const historialRoutes = require("./routes/historialProductos.routes");
+app.use("/historial", historialRoutes);
 
 // Ruta de prueba
 app.get("/", (req, res) => {
-  res.json({ mensaje: "Servidor funcionando correctamente 🚀" });
+  res.json({ mensaje: "Servidor funcionando correctamente" });
 });
 
 // Iniciar el servidor

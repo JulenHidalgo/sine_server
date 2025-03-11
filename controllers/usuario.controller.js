@@ -42,8 +42,10 @@ const crearUsuario = (req, res) => {
 const modificarEstadoUsuario = (req, res) => {
   const { id } = req.params;
   const { activo } = req.body;
+  console.log(activo);
+  console.log(id);
 
-  if (activo === undefined) {
+  if (!activo) {
     return res.status(400).json({ error: "Faltan datos (activo)" });
   }
 

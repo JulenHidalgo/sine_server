@@ -7,8 +7,8 @@ const ESTADO = Object.freeze({
 });
 
 class Usuario_producto {
-  constructor(usuario_id, producto_matricula, estado, fecha) {
-    this.usuario_id = usuario_id;
+  constructor(nombre, producto_matricula, estado, fecha) {
+    this.nombre = nombre;
     this.producto_matricula = producto_matricula;
     this.estado = estado;
     this.fecha = fecha;
@@ -17,7 +17,7 @@ class Usuario_producto {
   // Método para mapear un objeto de la base de datos a la clase Usuario_producto
   static fromRow(row) {
     return new Usuario_producto(
-      row.usuario_id,
+      row.nombre,
       row.producto_matricula,
       row.estado,
       row.fecha
@@ -26,18 +26,22 @@ class Usuario_producto {
 
   // Obtener todas las entradas en usuario_producto
   static obtenerTodos(callback) {
-    db.query("SELECT * FROM usuario_producto", (err, results) => {
-      if (err) return callback(err, null);
-      const usuario_productos = results.map((row) =>
-        Usuario_producto.fromRow(row)
-      );
-      callback(null, usuario_productos);
-    });
+    db.query(
+      "SELECT u.nombre, up.producto_matricula, up.estado, up.fecha FROM usuario_producto up JOIN usuario u ON up.usuario_id = u.id",
+      (err, results) => {
+        if (err) return callback(err, null);
+        const usuario_productos = results.map((row) =>
+          Usuario_producto.fromRow(row)
+        );
+        callback(null, usuario_productos);
+      }
+    );
   }
 
   // Obtener las entradas de un producto en usuario_producto
   static obtenerPorMatricula(usuario_producto, callback) {
-    const sql = "SELECT * FROM usuario_producto where producto_matricula = ?";
+    const sql =
+      "SELECT u.nombre, up.producto_matricula, up.estado, up.fecha FROM usuario_producto up JOIN usuario u ON up.usuario_id = u.id WHERE up.producto_matricula = ?";
     db.query(sql, [usuario_producto.producto_matricula], (err, results) => {
       if (err) return callback(err, null);
       const usuario_productos = results.map((row) =>
@@ -54,7 +58,7 @@ class Usuario_producto {
     db.query(
       sql,
       [
-        usuario_producto.usuario_id,
+        usuario_producto.usuario,
         usuario_producto.producto_matricula,
         usuario_producto.estado,
         usuario_producto.fecha,
