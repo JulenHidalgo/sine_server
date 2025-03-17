@@ -46,7 +46,7 @@ class HistorialProductos {
     );
   }
 
-  // ✅ Obtener todos los registros con async/await
+  // ✅ Obtener todo el historial de productos
   static async obtenerTodos() {
     try {
       console.log(
@@ -54,6 +54,30 @@ class HistorialProductos {
       );
       const [rows] = await db.query("SELECT * FROM vista_historial_productos");
       console.log("✅ Información obtenida:", rows);
+      return rows.map((row) => HistorialProductos.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  // ✅ Obtener historial por matrícula
+  static async obtenerPorMatricula(matricula) {
+    try {
+      console.log("🔍 Buscando historial para matrícula:", matricula);
+
+      const sql = "SELECT * FROM vista_historial_productos WHERE matricula = ?";
+      const [rows] = await db.query(sql, [matricula]);
+
+      if (rows.length === 0) {
+        console.log(
+          "❌ No se encontró historial para la matrícula:",
+          matricula
+        );
+        return null; // Indica que no se encontraron registros
+      }
+
+      console.log("✅ Historial encontrado:", rows);
       return rows.map((row) => HistorialProductos.fromRow(row));
     } catch (err) {
       console.error("❌ Error en la consulta SQL:", err.message);
