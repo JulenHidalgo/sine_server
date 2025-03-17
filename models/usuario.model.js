@@ -31,7 +31,7 @@ class Usuario {
     try {
       console.log("🔍 Insertando usuario con nombre:", usuario.nombre);
 
-      if (!usuario.nombre) {
+      if (!usuario || !usuario.nombre) {
         console.log("❌ Error: El nombre es undefined o vacío.");
         throw new Error("El nombre del usuario no puede estar vacío.");
       }
