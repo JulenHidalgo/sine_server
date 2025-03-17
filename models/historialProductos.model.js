@@ -15,18 +15,18 @@ class HistorialProductos {
     fecha3,
     observaciones
   ) {
-    (this.matricula = matricula),
-      (this.nombre_almacen = nombre_almacen),
-      (this.ot = ot),
-      (this.descripcion_obra = descripcion_obra),
-      (this.estado = estado),
-      (this.empleado1 = empleado1),
-      (this.fecha1 = fecha1),
-      (this.empleado2 = empleado2),
-      (this.fecha2 = fecha2),
-      (this.empleado3 = empleado3),
-      (this.fecha3 = fecha3),
-      (this.observaciones = observaciones);
+    this.matricula = matricula;
+    this.nombre_almacen = nombre_almacen;
+    this.ot = ot;
+    this.descripcion_obra = descripcion_obra;
+    this.estado = estado;
+    this.empleado1 = empleado1;
+    this.fecha1 = fecha1;
+    this.empleado2 = empleado2;
+    this.fecha2 = fecha2;
+    this.empleado3 = empleado3;
+    this.fecha3 = fecha3;
+    this.observaciones = observaciones;
   }
 
   static fromRow(row) {
@@ -46,12 +46,19 @@ class HistorialProductos {
     );
   }
 
-  static obtenerTodos(callback) {
-    db.query("SELECT * FROM vista_historial_productos", (err, results) => {
-      if (err) return callback(err, null);
-      const informacion = results.map((row) => HistorialProductos.fromRow(row));
-      callback(null, informacion);
-    });
+  // ✅ Obtener todos los registros con async/await
+  static async obtenerTodos() {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM vista_historial_productos"
+      );
+      const [rows] = await db.query("SELECT * FROM vista_historial_productos");
+      console.log("✅ Información obtenida:", rows);
+      return rows.map((row) => HistorialProductos.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
   }
 }
 

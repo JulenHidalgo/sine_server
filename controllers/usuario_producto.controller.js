@@ -1,56 +1,86 @@
 const Usuario_producto = require("../models/usuario_producto.model");
 
-// Obtener todas las entradas en usuario_producto
-const obtenerUsuario_productos = (req, res) => {
-  Usuario_producto.obtenerTodos((err, results) => {
-    if (err) {
-      return res
-        .status(500)
-        .json({ error: "Error obteniendo las entradas de usuario_producto" });
-    }
-    res.json(results);
-  });
-};
-// Obtener todas las entradas en usuario_producto
-const obtenerUsuario_productoPorMatricula = (req, res) => {
-  const { producto_matricula } = req.params;
-  const usuario_producto = new Usuario_producto(
-    null,
-    producto_matricula,
-    null,
-    null
-  );
-  Usuario_producto.obtenerPorMatricula(usuario_producto, (err, results) => {
-    if (err) {
-      return res.status(500).json({
-        error:
-          "Error obteniendo las entradas de usuario_producto por matricula",
-      });
-    }
-    res.json(results);
-  });
+// ✅ Obtener todas las entradas en usuario_producto con async/await
+const obtenerUsuario_productos = async (req, res) => {
+  try {
+    console.log("🔍 Obteniendo todas las entradas en usuario_producto...");
+    const usuario_productos = await Usuario_producto.obtenerTodos();
+    console.log("✅ Entradas obtenidas:", usuario_productos);
+    res.json(usuario_productos);
+  } catch (err) {
+    console.error("❌ Error obteniendo usuario_productos:", err.message);
+    res
+      .status(500)
+      .json({ error: "Error obteniendo las entradas de usuario_producto" });
+  }
 };
 
-// Crear una nueva entrada en usuario_producto
-const crearUsuario_producto = (req, res) => {
-  const { usuario_id, producto_matricula, estado, fecha } = req.body;
-  if (!usuario_id || !producto_matricula || !estado || !fecha) {
-    return res.status(400).json({ error: "Faltan datos en usuario_producto" });
-  }
-  const usuario_producto = new Usuario_producto(
-    usuario_id,
-    producto_matricula,
-    estado,
-    fecha
-  );
-  Usuario_producto.crear(usuario_producto, (err, usuario_productoCreado) => {
-    if (err) {
+// ✅ Obtener entradas de usuario_producto por matrícula con async/await
+const obtenerUsuario_productoPorMatricula = async (req, res) => {
+  try {
+    const { producto_matricula } = req.params;
+    console.log(
+      "🔍 Buscando usuario_producto con matrícula:",
+      producto_matricula
+    );
+
+    const usuario_productos = await Usuario_producto.obtenerPorMatricula(
+      producto_matricula
+    );
+
+    if (usuario_productos.length === 0) {
+      console.log(
+        "❌ No se encontraron registros para la matrícula:",
+        producto_matricula
+      );
       return res
-        .status(500)
-        .json({ error: "Error insertando usuario_producto" });
+        .status(404)
+        .json({ error: "No se encontraron registros para esta matrícula" });
     }
+
+    console.log("✅ Entradas encontradas:", usuario_productos);
+    res.json(usuario_productos);
+  } catch (err) {
+    console.error(
+      "❌ Error obteniendo usuario_producto por matrícula:",
+      err.message
+    );
+    res
+      .status(500)
+      .json({
+        error:
+          "Error obteniendo las entradas de usuario_producto por matrícula",
+      });
+  }
+};
+
+// ✅ Crear una nueva entrada en usuario_producto con async/await
+const crearUsuario_producto = async (req, res) => {
+  try {
+    console.log("🔍 Recibiendo datos en req.body:", req.body);
+
+    const { usuario_id, producto_matricula, estado, fecha } = req.body;
+    if (!usuario_id || !producto_matricula || !estado || !fecha) {
+      console.log("❌ Error: Datos insuficientes.");
+      return res
+        .status(400)
+        .json({ error: "Faltan datos en usuario_producto" });
+    }
+
+    console.log("🔍 Creando usuario_producto...");
+    const usuario_productoCreado = await Usuario_producto.crear({
+      usuario_id,
+      producto_matricula,
+      estado,
+      fecha,
+    });
+    console.log("✅ Usuario_producto creado:", usuario_productoCreado);
+
     res.json(usuario_productoCreado);
-  });
+  } catch (err) {
+    console.error("❌ Error insertando usuario_producto:", err.message);
+    res.status(500).json({ error: "Error insertando usuario_producto" });
+  }
 };
 
 module.exports = {

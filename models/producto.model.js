@@ -18,47 +18,79 @@ class Producto {
     );
   }
 
-  // Obtener todos los productos
-  static obtenerTodos(callback) {
-    db.query("SELECT * FROM producto", (err, results) => {
-      if (err) return callback(err, null);
-      const productos = results.map((row) => Producto.fromRow(row));
-      callback(null, productos);
-    });
+  // ✅ Obtener todos los productos con async/await
+  static async obtenerTodos() {
+    try {
+      console.log("🔍 Ejecutando consulta: SELECT * FROM producto");
+      const [rows] = await db.query("SELECT * FROM producto");
+      console.log("✅ Productos encontrados:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
   }
 
-  // Crear un nuevo usuario
-  static crear(obra, callback) {
-    const sql =
-      "INSERT INTO producto (matricula, observaciones, almacen_id, obra_ot) VALUES (?, ?, ?, ?)";
-    db.query(
-      sql,
-      [obra.matricula, obra.observaciones, obra.almacen_id, obra.obra_ot],
-      (err, result) => {
-        if (err) return callback(err, null);
-        callback(null, obra);
+  // ✅ Crear un nuevo producto con async/await
+  static async crear(producto) {
+    try {
+      console.log("🔍 Insertando producto con matrícula:", producto.matricula);
+
+      if (!producto.matricula || !producto.almacen_id || !producto.obra_ot) {
+        console.log("❌ Error: Datos insuficientes.");
+        throw new Error("Faltan datos en el producto.");
       }
-    );
+
+      const sql =
+        "INSERT INTO producto (matricula, observaciones, almacen_id, obra_ot) VALUES (?, ?, ?, ?)";
+      const [result] = await db.query(sql, [
+        producto.matricula,
+        producto.observaciones || "",
+        producto.almacen_id,
+        producto.obra_ot,
+      ]);
+
+      console.log("✅ Producto insertado con matrícula:", producto.matricula);
+      return { ...producto, id: result.insertId };
+    } catch (err) {
+      console.error("❌ Error insertando producto:", err.message);
+      throw err;
+    }
   }
 
-  // Modificar el atributo "observaciones" de un producto
-  static modificar(producto, callback) {
-    const sql =
-      "UPDATE producto SET observaciones = CONCAT(observaciones, ?)  WHERE matricula = ?";
-    db.query(
-      sql,
-      [";" + producto.observaciones, producto.matricula],
-      (err, result) => {
-        if (err) return callback(err, null);
+  // ✅ Modificar observaciones de un producto con async/await
+  static async modificar(producto) {
+    try {
+      console.log(
+        "🔍 Modificando producto con matrícula:",
+        producto.matricula,
+        "Nuevas observaciones:",
+        producto.observaciones
+      );
 
-        // Verificamos si se modificó algún registro
-        if (result.affectedRows === 0) {
-          return callback(new Error("Producto no encontrado"), null);
-        }
-
-        callback(null, producto);
+      if (!producto.matricula || !producto.observaciones) {
+        console.log("❌ Error: Datos insuficientes.");
+        throw new Error("Faltan datos (observaciones).");
       }
-    );
+
+      const sql =
+        "UPDATE producto SET observaciones = CONCAT(observaciones, ?) WHERE matricula = ?";
+      const [result] = await db.query(sql, [
+        "; " + producto.observaciones,
+        producto.matricula,
+      ]);
+
+      if (result.affectedRows === 0) {
+        console.log("❌ Producto no encontrado:", producto.matricula);
+        return null;
+      }
+
+      console.log("✅ Producto actualizado correctamente.");
+      return producto;
+    } catch (err) {
+      console.error("❌ Error modificando producto:", err.message);
+      throw err;
+    }
   }
 }
 
