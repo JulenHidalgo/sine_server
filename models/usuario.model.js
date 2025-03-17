@@ -12,13 +12,14 @@ class Usuario {
     return new Usuario(row.id, row.nombre, row.activo);
   }
 
-  // ✅ USAR PROMESAS EN LA CONSULTA
   static async obtenerTodos() {
     try {
+      console.log("🔍 Ejecutando consulta: SELECT * FROM usuario"); // Verificar si se ejecuta la consulta
       const [rows] = await db.query("SELECT * FROM usuario");
+      console.log("✅ Consulta ejecutada correctamente:", rows); // Ver datos devueltos
       return rows.map((row) => Usuario.fromRow(row));
     } catch (err) {
-      console.error("❌ Error en la consulta SQL:", err);
+      console.error("❌ Error en la consulta SQL:", err.message); // Mostrar el mensaje de error
       throw err;
     }
   }

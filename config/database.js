@@ -1,21 +1,27 @@
 const mysql = require("mysql2");
 require("dotenv").config();
 
-// Crear un pool de conexiones para evitar que la conexión se cierre
+// Verificar que está leyendo las variables de entorno correctamente
+console.log("🔍 Conectando a MySQL con:");
+console.log("  Host:", process.env.MYSQLHOST);
+console.log("  Puerto:", process.env.MYSQLPORT);
+console.log("  Usuario:", process.env.MYSQLUSER);
+console.log("  Base de Datos:", process.env.MYSQLDATABASE);
+
+// Crear un pool de conexiones
 const pool = mysql.createPool({
-  host: process.env.MYSQLHOST, // Host proporcionado por Railway
-  port: process.env.MYSQLPORT, // Puerto de MySQL en Railway
-  user: process.env.MYSQLUSER, // Usuario de la BD
-  password: process.env.MYSQLPASSWORD, // Contraseña de la BD
-  database: process.env.MYSQLDATABASE, // Nombre de la base de datos
-  waitForConnections: true, // Espera si las conexiones están ocupadas
-  connectionLimit: 10, // Número máximo de conexiones simultáneas
-  queueLimit: 0, // Sin límite de cola de conexiones
+  host: process.env.MYSQLHOST || "localhost",
+  port: process.env.MYSQLPORT || 3306,
+  user: process.env.MYSQLUSER || "root",
+  password: process.env.MYSQLPASSWORD || "",
+  database: process.env.MYSQLDATABASE || "test",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-// Convertir el pool a Promesas para evitar errores de estado
+// Convertir a promesas para evitar errores de conexión cerrada
 const db = pool.promise();
 
 console.log("✅ Conexión a MySQL establecida correctamente.");
-
 module.exports = db;
