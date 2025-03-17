@@ -29,9 +29,16 @@ class Usuario {
 
   static async crear(usuario) {
     try {
-      console.log("🔍 Insertando usuario:", usuario.nombre);
+      console.log("🔍 Insertando usuario con nombre:", usuario.nombre);
+
+      if (!usuario.nombre) {
+        console.log("❌ Error: El nombre es undefined o vacío.");
+        throw new Error("El nombre del usuario no puede estar vacío.");
+      }
+
       const sql = "INSERT INTO usuario (nombre, activo) VALUES (?, 1)";
       const [result] = await db.query(sql, [usuario.nombre]);
+
       usuario.id = result.insertId;
       console.log("✅ Usuario insertado con ID:", usuario.id);
       return usuario;
