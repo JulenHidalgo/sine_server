@@ -26,17 +26,28 @@ const obtenerUsuariosActivos = async (req, res) => {
   }
 };
 
-// Crear un nuevo usuario
 const crearUsuario = async (req, res) => {
   try {
+    console.log("🔍 Recibiendo datos en req.body:", req.body);
+
+    // Verificar si req.body está vacío
+    if (!req.body || Object.keys(req.body).length === 0) {
+      console.log("❌ Error: El cuerpo de la solicitud está vacío.");
+      return res
+        .status(400)
+        .json({ error: "El cuerpo de la solicitud está vacío." });
+    }
+
     const { nombre } = req.body;
     if (!nombre) {
+      console.log("❌ Error: Nombre no proporcionado");
       return res.status(400).json({ error: "Faltan datos en el usuario" });
     }
 
-    console.log("🔍 Creando usuario:", nombre);
+    console.log("🔍 Creando usuario con nombre:", nombre);
     const usuarioCreado = await Usuario.crear(new Usuario(null, nombre, true));
     console.log("✅ Usuario creado:", usuarioCreado);
+
     res.json(usuarioCreado);
   } catch (err) {
     console.error("❌ Error insertando usuario:", err.message);
