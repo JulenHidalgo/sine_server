@@ -18,14 +18,15 @@ const crearProducto = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
-    const { matricula, observaciones, almacen_id, obra_ot } = req.body;
-    if (!matricula || !almacen_id || !obra_ot) {
+    const { id, matricula, observaciones, almacen_id, obra_ot } = req.body;
+    if (!id || !matricula || !almacen_id || !obra_ot) {
       console.log("❌ Error: Datos insuficientes.");
       return res.status(400).json({ error: "Faltan datos en el producto" });
     }
 
     console.log("🔍 Creando producto con matrícula:", matricula);
     const productoCreado = await Producto.crear({
+      id,
       matricula,
       observaciones,
       almacen_id,
@@ -43,7 +44,7 @@ const crearProducto = async (req, res) => {
 // ✅ Modificar observaciones de un producto con async/await
 const modificarObservacionesProducto = async (req, res) => {
   try {
-    const { matricula } = req.params;
+    const { id } = req.params;
     const { observaciones } = req.body;
 
     console.log(
@@ -58,7 +59,11 @@ const modificarObservacionesProducto = async (req, res) => {
       return res.status(400).json({ error: "Faltan datos (observaciones)" });
     }
 
-    const resultado = await Producto.modificar({ matricula, observaciones });
+    const resultado = await Producto.modificar({
+      id,
+      matricula,
+      observaciones,
+    });
 
     if (!resultado) {
       console.log("❌ Producto no encontrado:", matricula);

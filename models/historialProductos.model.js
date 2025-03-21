@@ -2,6 +2,7 @@ const db = require("../config/database");
 
 class HistorialProductos {
   constructor(
+    id,
     matricula,
     nombre_almacen,
     ot,
@@ -15,6 +16,7 @@ class HistorialProductos {
     fecha3,
     observaciones
   ) {
+    this.id = id;
     this.matricula = matricula;
     this.nombre_almacen = nombre_almacen;
     this.ot = ot;
@@ -31,6 +33,7 @@ class HistorialProductos {
 
   static fromRow(row) {
     return new HistorialProductos(
+      row.id,
       row.matricula,
       row.nombre_almacen,
       row.ot,
@@ -74,6 +77,26 @@ class HistorialProductos {
           "❌ No se encontró historial para la matrícula:",
           matricula
         );
+        return null; // Indica que no se encontraron registros
+      }
+
+      console.log("✅ Historial encontrado:", rows);
+      return rows.map((row) => HistorialProductos.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  static async obtenerPorId(id) {
+    try {
+      console.log("🔍 Buscando historial para id:", id);
+
+      const sql = "SELECT * FROM vista_historial_productos WHERE id = ?";
+      const [rows] = await db.query(sql, [id]);
+
+      if (rows.length === 0) {
+        console.log("❌ No se encontró historial para la matrícula:", id);
         return null; // Indica que no se encontraron registros
       }
 

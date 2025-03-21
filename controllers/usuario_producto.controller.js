@@ -18,20 +18,17 @@ const obtenerUsuario_productos = async (req, res) => {
 // ✅ Obtener entradas de usuario_producto por matrícula con async/await
 const obtenerUsuario_productoPorMatricula = async (req, res) => {
   try {
-    const { producto_matricula } = req.params;
-    console.log(
-      "🔍 Buscando usuario_producto con matrícula:",
-      producto_matricula
-    );
+    const { producto_id } = req.params;
+    console.log("🔍 Buscando usuario_producto con matrícula:", producto_id);
 
     const usuario_productos = await Usuario_producto.obtenerPorMatricula(
-      producto_matricula
+      producto_id
     );
 
     if (usuario_productos.length === 0) {
       console.log(
         "❌ No se encontraron registros para la matrícula:",
-        producto_matricula
+        producto_id
       );
       return res
         .status(404)
@@ -45,12 +42,9 @@ const obtenerUsuario_productoPorMatricula = async (req, res) => {
       "❌ Error obteniendo usuario_producto por matrícula:",
       err.message
     );
-    res
-      .status(500)
-      .json({
-        error:
-          "Error obteniendo las entradas de usuario_producto por matrícula",
-      });
+    res.status(500).json({
+      error: "Error obteniendo las entradas de usuario_producto por matrícula",
+    });
   }
 };
 
@@ -59,8 +53,8 @@ const crearUsuario_producto = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
-    const { usuario_id, producto_matricula, estado, fecha } = req.body;
-    if (!usuario_id || !producto_matricula || !estado || !fecha) {
+    const { usuario_id, producto_id, estado, fecha } = req.body;
+    if (!usuario_id || !producto_id || !estado || !fecha) {
       console.log("❌ Error: Datos insuficientes.");
       return res
         .status(400)
@@ -70,7 +64,7 @@ const crearUsuario_producto = async (req, res) => {
     console.log("🔍 Creando usuario_producto...");
     const usuario_productoCreado = await Usuario_producto.crear({
       usuario_id,
-      producto_matricula,
+      producto_id,
       estado,
       fecha,
     });

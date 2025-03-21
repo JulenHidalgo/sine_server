@@ -1,7 +1,8 @@
 const db = require("../config/database");
 
 class Producto {
-  constructor(matricula, observaciones, almacen_id, obra_ot) {
+  constructor(id, matricula, observaciones, almacen_id, obra_ot) {
+    this.id = id;
     this.matricula = matricula;
     this.observaciones = observaciones;
     this.almacen_id = almacen_id;
@@ -11,6 +12,7 @@ class Producto {
   // Método para mapear un objeto de la base de datos a la clase Producto
   static fromRow(row) {
     return new Producto(
+      row.id,
       row.matricula,
       row.observaciones,
       row.almacen_id,
@@ -36,14 +38,20 @@ class Producto {
     try {
       console.log("🔍 Insertando producto con matrícula:", producto.matricula);
 
-      if (!producto.matricula || !producto.almacen_id || !producto.obra_ot) {
+      if (
+        !producto.id ||
+        !producto.matricula ||
+        !producto.almacen_id ||
+        !producto.obra_ot
+      ) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos en el producto.");
       }
 
       const sql =
-        "INSERT INTO producto (matricula, observaciones, almacen_id, obra_ot) VALUES (?, ?, ?, ?)";
+        "INSERT INTO producto (id, matricula, observaciones, almacen_id, obra_ot) VALUES (?, ?, ?, ?, ?)";
       const [result] = await db.query(sql, [
+        producto.id,
         producto.matricula,
         producto.observaciones || "",
         producto.almacen_id,
@@ -68,13 +76,13 @@ class Producto {
         producto.observaciones
       );
 
-      if (!producto.matricula || !producto.observaciones) {
+      if (!producto.id || !producto.matricula || !producto.observaciones) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos (observaciones).");
       }
 
       const sql =
-        "UPDATE producto SET observaciones = CONCAT(observaciones, ?) WHERE matricula = ?";
+        "UPDATE producto SET observaciones = CONCAT(observaciones, ?) WHERE id = ?";
       const [result] = await db.query(sql, [
         "; " + producto.observaciones,
         producto.matricula,

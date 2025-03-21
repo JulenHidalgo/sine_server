@@ -7,9 +7,9 @@ const ESTADO = Object.freeze({
 });
 
 class Usuario_producto {
-  constructor(usuario_id, producto_matricula, estado, fecha) {
+  constructor(usuario_id, producto_id, estado, fecha) {
     this.usuario_id = usuario_id;
-    this.producto_matricula = producto_matricula;
+    this.producto_id = producto_id;
     this.estado = estado;
     this.fecha = fecha;
   }
@@ -18,7 +18,7 @@ class Usuario_producto {
   static fromRow(row) {
     return new Usuario_producto(
       row.usuario_id,
-      row.producto_matricula,
+      row.producto_id,
       row.estado,
       row.fecha
     );
@@ -29,7 +29,7 @@ class Usuario_producto {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM usuario_producto");
       const sql = `
-        SELECT u.id AS usuario_id, u.nombre, up.producto_matricula, up.estado, up.fecha 
+        SELECT u.id AS usuario_id, u.nombre, up.producto_id, up.estado, up.fecha 
         FROM usuario_producto up 
         JOIN usuario u ON up.usuario_id = u.id`;
       const [rows] = await db.query(sql);
@@ -42,19 +42,16 @@ class Usuario_producto {
   }
 
   // ✅ Obtener entradas de usuario_producto por matrícula con async/await
-  static async obtenerPorMatricula(producto_matricula) {
+  static async obtenerPorMatricula(producto_id) {
     try {
-      console.log(
-        "🔍 Buscando usuario_producto con matrícula:",
-        producto_matricula
-      );
+      console.log("🔍 Buscando usuario_producto con matrícula:", producto_id);
 
       const sql = `
-        SELECT u.id AS usuario_id, u.nombre, up.producto_matricula, up.estado, up.fecha 
+        SELECT u.id AS usuario_id, u.nombre, up.producto_id, up.estado, up.fecha 
         FROM usuario_producto up 
         JOIN usuario u ON up.usuario_id = u.id 
-        WHERE up.producto_matricula = ?`;
-      const [rows] = await db.query(sql, [producto_matricula]);
+        WHERE up.producto_id = ?`;
+      const [rows] = await db.query(sql, [producto_id]);
 
       console.log("✅ Entradas encontradas:", rows);
       return rows;
@@ -65,26 +62,26 @@ class Usuario_producto {
   }
 
   // ✅ Crear una nueva entrada en usuario_producto con async/await
-  static async crear({ usuario_id, producto_matricula, estado, fecha }) {
+  static async crear({ usuario_id, producto_id, estado, fecha }) {
     try {
       console.log(
         "🔍 Insertando usuario_producto con usuario_id:",
         usuario_id,
         "y matrícula:",
-        producto_matricula
+        producto_id
       );
 
-      if (!usuario_id || !producto_matricula || !estado || !fecha) {
+      if (!usuario_id || !producto_id || !estado || !fecha) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos en usuario_producto.");
       }
 
       const sql = `
-        INSERT INTO usuario_producto (usuario_id, producto_matricula, estado, fecha) 
+        INSERT INTO usuario_producto (usuario_id, producto_id, estado, fecha) 
         VALUES (?, ?, ?, ?)`;
       const [result] = await db.query(sql, [
         usuario_id,
-        producto_matricula,
+        producto_id,
         estado,
         fecha,
       ]);
@@ -92,7 +89,7 @@ class Usuario_producto {
       console.log("✅ Usuario_producto insertado correctamente.");
       return {
         usuario_id,
-        producto_matricula,
+        producto_id,
         estado,
         fecha,
         id: result.insertId,
