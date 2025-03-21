@@ -1,9 +1,15 @@
 // Importar la configuración de la base de datos
 const db = require("../config/database");
 
-// Definición de la clase Usuario
+/**
+ * Clase que representa operaciones relacionadas con usuarios.
+ */
 class Usuario {
-  // Método para obtener todos los usuarios
+  /**
+   * Obtiene todos los usuarios de la base de datos.
+   * @returns {Promise<Array>} Lista de usuarios.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM usuario");
@@ -16,7 +22,11 @@ class Usuario {
     }
   }
 
-  // Método para obtener solo los usuarios que están activos
+  /**
+   * Obtiene los usuarios que están activos.
+   * @returns {Promise<Array>} Lista de usuarios activos.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   static async obtenerActivos() {
     try {
       console.log(
@@ -31,22 +41,25 @@ class Usuario {
     }
   }
 
-  // Método para crear un nuevo usuario
+  /**
+   * Crea un nuevo usuario en la base de datos.
+   * @param {Object} usuario - Objeto que contiene los datos del usuario.
+   * @param {string} usuario.nombre - Nombre del usuario.
+   * @returns {Promise<Object>} Usuario creado con ID asignado.
+   * @throws {Error} Si faltan datos o ocurre un error en la inserción.
+   */
   static async crear(usuario) {
     try {
       console.log("🔍 Insertando usuario con nombre:", usuario.nombre);
 
-      // Validación: el nombre del usuario no puede estar vacío
       if (!usuario || !usuario.nombre) {
         console.log("❌ Error: El nombre es undefined o vacío.");
         throw new Error("El nombre del usuario no puede estar vacío.");
       }
 
-      // Consulta para insertar un nuevo usuario, con estado activo por defecto
       const sql = "INSERT INTO usuario (nombre, activo) VALUES (?, 1)";
       const [result] = await db.query(sql, [usuario.nombre]);
 
-      // Asignar el ID generado por la base de datos al objeto usuario
       usuario.id = result.insertId;
       console.log("✅ Usuario insertado con ID:", usuario.id);
       return usuario;
@@ -56,7 +69,14 @@ class Usuario {
     }
   }
 
-  // Método para modificar el estado (activo/inactivo) de un usuario existente
+  /**
+   * Modifica el estado (activo/inactivo) de un usuario.
+   * @param {Object} usuario - Objeto que contiene el ID y nuevo estado.
+   * @param {number} usuario.id - ID del usuario.
+   * @param {boolean|number} usuario.activo - Nuevo estado del usuario.
+   * @returns {Promise<Object|null>} Usuario actualizado o null si no se encontró.
+   * @throws {Error} Si ocurre un error en la actualización.
+   */
   static async modificar(usuario) {
     try {
       console.log(
@@ -68,7 +88,6 @@ class Usuario {
       const sql = "UPDATE usuario SET activo = ? WHERE id = ?";
       const [result] = await db.query(sql, [usuario.activo, usuario.id]);
 
-      // Verificar si se modificó algún registro
       if (result.affectedRows === 0) {
         console.log("❌ Usuario no encontrado:", usuario.id);
         return null;

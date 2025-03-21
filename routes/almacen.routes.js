@@ -1,4 +1,8 @@
-// Importar Express y crear un enrutador
+/**
+ * Rutas para la gestión de almacenes.
+ * @module routes/almacen
+ */
+
 const express = require("express");
 const router = express.Router();
 
@@ -8,10 +12,18 @@ const {
   crearAlmacen,
 } = require("../controllers/almacen.controller");
 
-// Ruta para obtener todos los almacenes
+/**
+ * GET /
+ * Obtiene todos los almacenes registrados.
+ * @route GET /almacen
+ */
 router.get("/", obtenerAlmacenes);
 
-// Ruta para crear un nuevo almacén
+/**
+ * POST /
+ * Crea un nuevo almacén.
+ * @route POST /almacen
+ */
 router.post("/", crearAlmacen);
 
 // Exportar el enrutador para usarlo en la aplicación principal

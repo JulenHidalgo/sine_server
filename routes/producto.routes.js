@@ -1,4 +1,8 @@
-// Importar Express y crear un enrutador
+/**
+ * Rutas para la gestión de productos.
+ * @module routes/producto
+ */
+
 const express = require("express");
 const router = express.Router();
 
@@ -9,14 +13,26 @@ const {
   modificarObservacionesProducto,
 } = require("../controllers/producto.controller");
 
-// Ruta para obtener todos los productos
+/**
+ * GET /
+ * Obtiene todos los productos registrados.
+ * @route GET /producto
+ */
 router.get("/", obtenerProductos);
 
-// Ruta para modificar las observaciones de un producto
-// Se identifica el producto por su matrícula en la URL
+/**
+ * PUT /:matricula
+ * Modifica las observaciones de un producto identificado por su matrícula.
+ * @route PUT /producto/:matricula
+ * @param {string} matricula - Matrícula del producto.
+ */
 router.put("/:matricula", modificarObservacionesProducto);
 
-// Ruta para crear un nuevo producto
+/**
+ * POST /
+ * Crea un nuevo producto.
+ * @route POST /producto
+ */
 router.post("/", crearProducto);
 
 // Exportar el enrutador para usarlo en la aplicación principal

@@ -1,4 +1,8 @@
-// Importar Express y crear un enrutador
+/**
+ * Rutas para la gestión de usuario-producto.
+ * @module routes/usuario_producto
+ */
+
 const express = require("express");
 const router = express.Router();
 
@@ -9,14 +13,26 @@ const {
   obtenerUsuario_productoPorMatricula,
 } = require("../controllers/usuario_producto.controller");
 
-// Ruta para obtener todos los registros de usuario-producto
+/**
+ * GET /
+ * Obtiene todos los registros de relación usuario-producto.
+ * @route GET /usuario_producto
+ */
 router.get("/", obtenerUsuario_productos);
 
-// Ruta para obtener los registros filtrados por matrícula del producto
-// Se pasa la matrícula como parámetro en la URL
+/**
+ * GET /:producto_matricula
+ * Obtiene los registros de usuario-producto filtrados por matrícula del producto.
+ * @route GET /usuario_producto/:producto_matricula
+ * @param {string} producto_matricula - Matrícula del producto.
+ */
 router.get("/:producto_matricula", obtenerUsuario_productoPorMatricula);
 
-// Ruta para crear un nuevo registro de usuario-producto
+/**
+ * POST /
+ * Crea un nuevo registro de usuario-producto.
+ * @route POST /usuario_producto
+ */
 router.post("/", crearUsuario_producto);
 
 // Exportar el enrutador para usarlo en la aplicación principal

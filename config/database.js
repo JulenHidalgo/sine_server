@@ -1,3 +1,20 @@
+/**
+ * Configuración de la conexión a la base de datos MySQL.
+ * Utiliza un pool de conexiones en modo promesa para soporte con async/await.
+ *
+ * Variables de entorno requeridas:
+ * - MYSQLHOST
+ * - MYSQLPORT
+ * - MYSQLUSER
+ * - MYSQLPASSWORD
+ * - MYSQLDATABASE
+ *
+ * @module config/database
+ * @requires mysql2
+ * @requires dotenv
+ * @returns {PromisePool} Objeto de conexión en modo promesa
+ */
+
 // Importar el cliente de MySQL con soporte para promesas
 const mysql = require("mysql2");
 

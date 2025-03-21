@@ -1,20 +1,34 @@
 // Importar la configuración de la base de datos
 const db = require("../config/database");
 
-// Definición de la clase Almacen
+/**
+ * Clase que representa un almacén.
+ */
 class Almacen {
-  // Constructor para crear una instancia de Almacen
+  /**
+   * Crea una instancia de Almacen.
+   * @param {number} id - Identificador del almacén.
+   * @param {string} nombre - Nombre del almacén.
+   */
   constructor(id, nombre) {
     this.id = id;
     this.nombre = nombre;
   }
 
-  // Método para convertir una fila de la base de datos en un objeto Almacen
+  /**
+   * Convierte una fila de la base de datos en una instancia de Almacen.
+   * @param {Object} row - Fila obtenida desde la base de datos.
+   * @returns {Almacen} Instancia de la clase Almacen.
+   */
   static fromRow(row) {
     return new Almacen(row.id, row.nombre);
   }
 
-  // Método para obtener todos los almacenes desde la base de datos
+  /**
+   * Obtiene todos los almacenes desde la base de datos.
+   * @returns {Promise<Array>} Lista de almacenes.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM almacen");
@@ -27,12 +41,17 @@ class Almacen {
     }
   }
 
-  // Método para crear un nuevo almacén en la base de datos
+  /**
+   * Crea un nuevo almacén en la base de datos.
+   * @param {Object} almacen - Objeto que contiene el nombre del almacén.
+   * @param {string} almacen.nombre - Nombre del nuevo almacén.
+   * @returns {Promise<Object>} Almacén creado con su ID asignado.
+   * @throws {Error} Si faltan datos o hay un error en la inserción.
+   */
   static async crear(almacen) {
     try {
       console.log("🔍 Insertando almacén con nombre:", almacen.nombre);
 
-      // Validación: el nombre del almacén es obligatorio
       if (!almacen.nombre) {
         console.log("❌ Error: El nombre del almacén es obligatorio.");
         throw new Error("Faltan datos en el almacén.");

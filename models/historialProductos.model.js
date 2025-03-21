@@ -1,9 +1,26 @@
 // Importar la configuración de la base de datos
 const db = require("../config/database");
 
-// Definición de la clase HistorialProductos
+/**
+ * Clase que representa el historial de movimientos de productos.
+ */
 class HistorialProductos {
-  // Constructor para crear una instancia de HistorialProductos
+  /**
+   * Crea una instancia de HistorialProductos.
+   * @param {number} id - Identificador del historial.
+   * @param {string} matricula - Matrícula del producto.
+   * @param {string} nombre_almacen - Nombre del almacén.
+   * @param {string} ot - Orden de trabajo de la obra.
+   * @param {string} descripcion_obra - Descripción de la obra.
+   * @param {string} estado - Estado general del producto.
+   * @param {string} empleado1 - Primer usuario que interactuó con el producto.
+   * @param {string} fecha1 - Fecha de la primera acción.
+   * @param {string} empleado2 - Segundo usuario que interactuó con el producto.
+   * @param {string} fecha2 - Fecha de la segunda acción.
+   * @param {string} empleado3 - Tercer usuario que interactuó con el producto.
+   * @param {string} fecha3 - Fecha de la tercera acción.
+   * @param {string} observaciones - Observaciones generales.
+   */
   constructor(
     id,
     matricula,
@@ -34,7 +51,11 @@ class HistorialProductos {
     this.observaciones = observaciones;
   }
 
-  // Método para convertir una fila de la base de datos en un objeto HistorialProductos
+  /**
+   * Convierte una fila de la base de datos en una instancia de HistorialProductos.
+   * @param {Object} row - Fila obtenida de la base de datos.
+   * @returns {HistorialProductos} Instancia del historial.
+   */
   static fromRow(row) {
     return new HistorialProductos(
       row.id,
@@ -53,7 +74,11 @@ class HistorialProductos {
     );
   }
 
-  // Método para obtener todo el historial de productos desde la vista
+  /**
+   * Obtiene todos los registros del historial desde la vista.
+   * @returns {Promise<Array<HistorialProductos>>} Lista completa del historial.
+   * @throws {Error} Si ocurre un error en la consulta.
+   */
   static async obtenerTodos() {
     try {
       console.log(
@@ -61,7 +86,6 @@ class HistorialProductos {
       );
       const [rows] = await db.query("SELECT * FROM vista_historial_productos");
       console.log("✅ Información obtenida:", rows);
-      // Mapear cada fila a una instancia de la clase
       return rows.map((row) => HistorialProductos.fromRow(row));
     } catch (err) {
       console.error("❌ Error en la consulta SQL:", err.message);
@@ -69,7 +93,12 @@ class HistorialProductos {
     }
   }
 
-  // Método para obtener historial de un producto específico por su matrícula
+  /**
+   * Obtiene los registros del historial de un producto por su matrícula.
+   * @param {string} matricula - Matrícula del producto.
+   * @returns {Promise<Array<HistorialProductos>|null>} Registros encontrados o null.
+   * @throws {Error} Si ocurre un error en la consulta.
+   */
   static async obtenerPorMatricula(matricula) {
     try {
       console.log("🔍 Buscando historial para matrícula:", matricula);
@@ -77,7 +106,6 @@ class HistorialProductos {
       const sql = "SELECT * FROM vista_historial_productos WHERE matricula = ?";
       const [rows] = await db.query(sql, [matricula]);
 
-      // Si no hay resultados, se retorna null
       if (rows.length === 0) {
         console.log(
           "❌ No se encontró historial para la matrícula:",
@@ -94,7 +122,12 @@ class HistorialProductos {
     }
   }
 
-  // Método para obtener historial por ID
+  /**
+   * Obtiene un registro del historial por su ID.
+   * @param {number} id - ID del historial.
+   * @returns {Promise<Array<HistorialProductos>|null>} Registros encontrados o null.
+   * @throws {Error} Si ocurre un error en la consulta.
+   */
   static async obtenerPorId(id) {
     try {
       console.log("🔍 Buscando historial para id:", id);
@@ -102,7 +135,6 @@ class HistorialProductos {
       const sql = "SELECT * FROM vista_historial_productos WHERE id = ?";
       const [rows] = await db.query(sql, [id]);
 
-      // Si no hay resultados, se retorna null
       if (rows.length === 0) {
         console.log("❌ No se encontró historial para la matrícula:", id);
         return null;

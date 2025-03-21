@@ -1,0 +1,19 @@
+{
+    "source": {
+      "include": ["controllers", "models", "routes", "server.js", "config/database.js"],
+      "includePattern": ".*\\.js$",
+      "excludePattern": "(node_modules|docs|package-lock.json)"
+    },
+    "opts": {
+      "destination": "./docs",
+      "recurse": true,
+      "readme": "./README.md"
+    },
+    "templates": {
+      "default": {
+        "includeDate": false,
+        "outputSourceFiles": false
+      }
+    }
+  }
+  

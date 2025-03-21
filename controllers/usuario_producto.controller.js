@@ -1,7 +1,21 @@
 // Importar el modelo Usuario_producto
 const Usuario_producto = require("../models/usuario_producto.model");
 
-// Controlador para obtener todas las entradas de la tabla usuario_producto
+/**
+ * @typedef {Object} Request
+ * @description Objeto de solicitud HTTP (Express).
+ */
+
+/**
+ * @typedef {Object} Response
+ * @description Objeto de respuesta HTTP (Express).
+ */
+
+/**
+ * Controlador para obtener todas las entradas de la tabla usuario_producto.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerUsuario_productos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todas las entradas en usuario_producto...");
@@ -16,7 +30,11 @@ const obtenerUsuario_productos = async (req, res) => {
   }
 };
 
-// Controlador para obtener entradas de usuario_producto filtradas por matrícula
+/**
+ * Controlador para obtener entradas de usuario_producto filtradas por matrícula.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerUsuario_productoPorMatricula = async (req, res) => {
   try {
     const { producto_id } = req.params;
@@ -26,7 +44,6 @@ const obtenerUsuario_productoPorMatricula = async (req, res) => {
       producto_id
     );
 
-    // Si no se encuentran registros, devolver error 404
     if (usuario_productos.length === 0) {
       console.log(
         "❌ No se encontraron registros para la matrícula:",
@@ -50,14 +67,17 @@ const obtenerUsuario_productoPorMatricula = async (req, res) => {
   }
 };
 
-// Controlador para crear una nueva entrada en la tabla usuario_producto
+/**
+ * Controlador para crear una nueva entrada en la tabla usuario_producto.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const crearUsuario_producto = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
     const { usuario_id, producto_id, estado, fecha } = req.body;
 
-    // Validar que todos los campos necesarios estén presentes
     if (!usuario_id || !producto_id || !estado || !fecha) {
       console.log("❌ Error: Datos insuficientes.");
       return res

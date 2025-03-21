@@ -1,7 +1,21 @@
 // Importar el modelo de Usuario
 const Usuario = require("../models/usuario.model");
 
-// Controlador para obtener todos los usuarios
+/**
+ * @typedef {Object} Request
+ * @description Objeto de solicitud HTTP (Express).
+ */
+
+/**
+ * @typedef {Object} Response
+ * @description Objeto de respuesta HTTP (Express).
+ */
+
+/**
+ * Controlador para obtener todos los usuarios.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerUsuarios = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todos los usuarios...");
@@ -14,7 +28,11 @@ const obtenerUsuarios = async (req, res) => {
   }
 };
 
-// Controlador para obtener solo los usuarios que están activos
+/**
+ * Controlador para obtener solo los usuarios activos.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerUsuariosActivos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo usuarios activos...");
@@ -27,7 +45,11 @@ const obtenerUsuariosActivos = async (req, res) => {
   }
 };
 
-// Controlador para crear un nuevo usuario
+/**
+ * Controlador para crear un nuevo usuario.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const crearUsuario = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
@@ -40,7 +62,6 @@ const crearUsuario = async (req, res) => {
 
     console.log("🔍 Creando usuario con nombre:", nombre);
 
-    // Llamar al modelo para crear el usuario
     const usuarioCreado = await Usuario.crear({ nombre });
 
     console.log("✅ Usuario creado:", usuarioCreado);
@@ -51,7 +72,11 @@ const crearUsuario = async (req, res) => {
   }
 };
 
-// Controlador para modificar el estado "activo" de un usuario
+/**
+ * Controlador para modificar el estado activo/inactivo de un usuario.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const modificarEstadoUsuario = async (req, res) => {
   try {
     const { id } = req.params;
@@ -59,14 +84,12 @@ const modificarEstadoUsuario = async (req, res) => {
 
     console.log("🔍 Modificando usuario:", { id, activo });
 
-    // Validar que se haya recibido el campo "activo"
     if (activo === undefined) {
       return res.status(400).json({ error: "Faltan datos (activo)" });
     }
 
     const resultado = await Usuario.modificar({ id, activo });
 
-    // Si no se encuentra el usuario, devolver 404
     if (!resultado) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }

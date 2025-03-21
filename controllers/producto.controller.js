@@ -1,7 +1,21 @@
 // Importar el modelo Producto
 const Producto = require("../models/producto.model");
 
-// Controlador para obtener todos los productos
+/**
+ * @typedef {Object} Request
+ * @description Objeto de solicitud HTTP (Express).
+ */
+
+/**
+ * @typedef {Object} Response
+ * @description Objeto de respuesta HTTP (Express).
+ */
+
+/**
+ * Controlador para obtener todos los productos.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerProductos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todos los productos...");
@@ -14,14 +28,17 @@ const obtenerProductos = async (req, res) => {
   }
 };
 
-// Controlador para crear un nuevo producto
+/**
+ * Controlador para crear un nuevo producto.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const crearProducto = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
     const { id, matricula, observaciones, almacen_id, obra_ot } = req.body;
 
-    // Verificar que los campos obligatorios estén presentes
     if (!id || !matricula || !almacen_id || !obra_ot) {
       console.log("❌ Error: Datos insuficientes.");
       return res.status(400).json({ error: "Faltan datos en el producto" });
@@ -44,35 +61,35 @@ const crearProducto = async (req, res) => {
   }
 };
 
-// Controlador para modificar las observaciones de un producto
+/**
+ * Controlador para modificar las observaciones de un producto.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const modificarObservacionesProducto = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // Se usará `id` en lugar de `matricula`
     const { observaciones } = req.body;
 
     console.log(
-      "🔍 Modificando observaciones de producto con matrícula:",
-      matricula,
+      "🔍 Modificando observaciones de producto con ID:",
+      id,
       "Nueva observación:",
       observaciones
     );
 
-    // Validar que se haya enviado una observación válida
     if (!observaciones || observaciones.trim() === "") {
       console.log("❌ Error: No se envió una observación válida.");
       return res.status(400).json({ error: "Faltan datos (observaciones)" });
     }
 
-    // Llamar al modelo para realizar la modificación
     const resultado = await Producto.modificar({
       id,
-      matricula,
       observaciones,
     });
 
-    // Verificar si el producto fue encontrado
     if (!resultado) {
-      console.log("❌ Producto no encontrado:", matricula);
+      console.log("❌ Producto no encontrado:", id);
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
