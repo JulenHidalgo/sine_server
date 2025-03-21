@@ -1,7 +1,20 @@
 // Importar el modelo Almacen
 const Almacen = require("../models/almacen.model");
 
-// Controlador para obtener todos los almacenes
+/**
+ * @typedef {Object} Request
+ * @description Objeto de solicitud HTTP (Express).
+ */
+
+/**
+ * @typedef {Object} Response
+ * @description Objeto de respuesta HTTP (Express).
+ */
+/**
+ * Controlador para obtener todos los almacenes.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerAlmacenes = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todos los almacenes...");
@@ -14,14 +27,17 @@ const obtenerAlmacenes = async (req, res) => {
   }
 };
 
-// Controlador para crear un nuevo almacén
+/**
+ * Controlador para crear un nuevo almacén.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const crearAlmacen = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
     const { nombre } = req.body;
 
-    // Validar que se haya enviado el nombre del almacén
     if (!nombre) {
       console.log("❌ Error: El nombre del almacén es obligatorio.");
       return res.status(400).json({ error: "Faltan datos en el almacén" });
@@ -29,7 +45,6 @@ const crearAlmacen = async (req, res) => {
 
     console.log("🔍 Creando almacén con nombre:", nombre);
 
-    // Crear una instancia del almacén y guardarla en la base de datos
     const almacenCreado = await Almacen.crear(new Almacen(null, nombre));
     console.log("✅ Almacén creado:", almacenCreado);
 

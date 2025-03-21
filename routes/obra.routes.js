@@ -1,14 +1,26 @@
-// Importar Express y crear un enrutador
+/**
+ * Rutas para la gestión de obras.
+ * @module routes/obra
+ */
+
 const express = require("express");
 const router = express.Router();
 
 // Importar las funciones del controlador de obras
 const { obtenerObras, crearObra } = require("../controllers/obra.controller");
 
-// Ruta para obtener todas las obras
+/**
+ * GET /
+ * Obtiene todas las obras registradas.
+ * @route GET /obra
+ */
 router.get("/", obtenerObras);
 
-// Ruta para crear una nueva obra
+/**
+ * POST /
+ * Crea una nueva obra.
+ * @route POST /obra
+ */
 router.post("/", crearObra);
 
 // Exportar el enrutador para usarlo en la aplicación principal

@@ -1,20 +1,34 @@
 // Importar la configuración de la base de datos
 const db = require("../config/database");
 
-// Definición de la clase Obra
+/**
+ * Clase que representa una obra.
+ */
 class Obra {
-  // Constructor para crear una instancia de Obra
+  /**
+   * Crea una instancia de Obra.
+   * @param {string} ot - Código de orden de trabajo (OT) de la obra.
+   * @param {string} descripcion - Descripción de la obra.
+   */
   constructor(ot, descripcion) {
     this.ot = ot;
     this.descripcion = descripcion;
   }
 
-  // Método para convertir una fila de la base de datos en un objeto Obra
+  /**
+   * Convierte una fila de la base de datos en una instancia de Obra.
+   * @param {Object} row - Fila obtenida de la base de datos.
+   * @returns {Obra} Instancia de la clase Obra.
+   */
   static fromRow(row) {
     return new Obra(row.ot, row.descripcion);
   }
 
-  // Método para obtener todas las obras desde la base de datos
+  /**
+   * Obtiene todas las obras desde la base de datos.
+   * @returns {Promise<Array>} Lista de obras.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM obra");
@@ -27,18 +41,21 @@ class Obra {
     }
   }
 
-  // Método para crear una nueva obra en la base de datos
+  /**
+   * Crea una nueva obra en la base de datos.
+   * @param {Obra} obra - Objeto con los datos de la obra.
+   * @returns {Promise<Object>} Obra creada.
+   * @throws {Error} Si faltan datos o hay error en la inserción.
+   */
   static async crear(obra) {
     try {
       console.log("🔍 Insertando obra con OT:", obra.ot);
 
-      // Validación: la OT (identificador de la obra) es obligatoria
       if (!obra.ot) {
         console.log("❌ Error: La OT es obligatoria.");
         throw new Error("Faltan datos en la obra.");
       }
 
-      // Si no se proporciona una descripción, se asigna una por defecto
       if (!obra.descripcion || obra.descripcion.trim() === "") {
         obra.descripcion =
           "No se ha introducido una descripción para esta obra";

@@ -1,3 +1,16 @@
+/**
+ * Punto de entrada principal del servidor Express.
+ * Configura middlewares, rutas y lanza el servidor.
+ *
+ * Variables de entorno necesarias:
+ * - PORT
+ *
+ * @module server
+ * @requires express
+ * @requires cors
+ * @requires dotenv
+ */
+
 // Cargar las variables de entorno desde el archivo .env
 require("dotenv").config();
 

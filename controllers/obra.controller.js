@@ -1,7 +1,21 @@
 // Importar el modelo Obra
 const Obra = require("../models/obra.model");
 
-// Controlador para obtener todas las obras
+/**
+ * @typedef {Object} Request
+ * @description Objeto de solicitud HTTP (Express).
+ */
+
+/**
+ * @typedef {Object} Response
+ * @description Objeto de respuesta HTTP (Express).
+ */
+
+/**
+ * Controlador para obtener todas las obras.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const obtenerObras = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todas las obras...");
@@ -14,14 +28,17 @@ const obtenerObras = async (req, res) => {
   }
 };
 
-// Controlador para crear una nueva obra
+/**
+ * Controlador para crear una nueva obra.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
 const crearObra = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
     const { ot, descripcion } = req.body;
 
-    // Verificar que el campo "ot" esté presente
     if (!ot) {
       console.log("❌ Error: La OT es obligatoria.");
       return res.status(400).json({ error: "Faltan datos en la obra" });
@@ -29,7 +46,6 @@ const crearObra = async (req, res) => {
 
     console.log("🔍 Creando obra con OT:", ot);
 
-    // Crear la instancia de Obra y pasarla al modelo
     const obraCreada = await Obra.crear(new Obra(ot, descripcion));
     console.log("✅ Obra creada:", obraCreada);
 

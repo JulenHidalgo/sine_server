@@ -8,9 +8,17 @@ const ESTADO = Object.freeze({
   DEVUELTO: "Devuelto",
 });
 
-// Definición de la clase Usuario_producto
+/**
+ * Clase que representa la relación entre un usuario y un producto.
+ */
 class Usuario_producto {
-  // Constructor para crear una instancia de Usuario_producto
+  /**
+   * Crea una instancia de Usuario_producto.
+   * @param {number} usuario_id - ID del usuario.
+   * @param {string} producto_id - Matrícula o ID del producto.
+   * @param {string} estado - Estado del producto (ej. Recibido, Devuelto).
+   * @param {string} fecha - Fecha del registro (formato YYYY-MM-DD).
+   */
   constructor(usuario_id, producto_id, estado, fecha) {
     this.usuario_id = usuario_id;
     this.producto_id = producto_id;
@@ -18,7 +26,11 @@ class Usuario_producto {
     this.fecha = fecha;
   }
 
-  // Método para convertir una fila de la base de datos en un objeto de esta clase
+  /**
+   * Convierte una fila de la base de datos en una instancia de Usuario_producto.
+   * @param {Object} row - Fila obtenida desde la base de datos.
+   * @returns {Usuario_producto} Instancia creada a partir de los datos.
+   */
   static fromRow(row) {
     return new Usuario_producto(
       row.usuario_id,
@@ -28,7 +40,11 @@ class Usuario_producto {
     );
   }
 
-  // Método para obtener todas las entradas de la tabla usuario_producto
+  /**
+   * Obtiene todas las entradas de la tabla usuario_producto.
+   * @returns {Promise<Array>} Lista de registros usuario-producto.
+   * @throws {Error} Si ocurre un error en la consulta.
+   */
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM usuario_producto");
@@ -45,7 +61,12 @@ class Usuario_producto {
     }
   }
 
-  // Método para obtener las entradas de usuario_producto por matrícula de producto
+  /**
+   * Obtiene las entradas de usuario_producto filtradas por matrícula del producto.
+   * @param {string} producto_id - Matrícula o ID del producto.
+   * @returns {Promise<Array>} Registros correspondientes al producto.
+   * @throws {Error} Si ocurre un error en la consulta.
+   */
   static async obtenerPorMatricula(producto_id) {
     try {
       console.log("🔍 Buscando usuario_producto con matrícula:", producto_id);
@@ -65,7 +86,16 @@ class Usuario_producto {
     }
   }
 
-  // Método para crear una nueva entrada en la tabla usuario_producto
+  /**
+   * Crea una nueva entrada en la tabla usuario_producto.
+   * @param {Object} data - Datos del nuevo registro.
+   * @param {number} data.usuario_id - ID del usuario.
+   * @param {string} data.producto_id - Matrícula del producto.
+   * @param {string} data.estado - Estado del producto.
+   * @param {string} data.fecha - Fecha del movimiento.
+   * @returns {Promise<Object>} Objeto con los datos insertados y el ID generado.
+   * @throws {Error} Si faltan datos o hay un error en la inserción.
+   */
   static async crear({ usuario_id, producto_id, estado, fecha }) {
     try {
       console.log(
@@ -75,7 +105,6 @@ class Usuario_producto {
         producto_id
       );
 
-      // Validación básica de datos requeridos
       if (!usuario_id || !producto_id || !estado || !fecha) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos en usuario_producto.");

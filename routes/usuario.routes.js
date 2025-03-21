@@ -1,4 +1,8 @@
-// Importar Express y crear un enrutador
+/**
+ * Rutas para la gestión de usuarios.
+ * @module routes/usuario
+ */
+
 const express = require("express");
 const router = express.Router();
 
@@ -10,17 +14,33 @@ const {
   crearUsuario,
 } = require("../controllers/usuario.controller");
 
-// Ruta para obtener todos los usuarios
+/**
+ * GET /
+ * Obtiene todos los usuarios del sistema.
+ * @route GET /usuario
+ */
 router.get("/", obtenerUsuarios);
 
-// Ruta para obtener únicamente los usuarios activos
+/**
+ * GET /activos
+ * Obtiene únicamente los usuarios que están activos.
+ * @route GET /usuario/activos
+ */
 router.get("/activos", obtenerUsuariosActivos);
 
-// Ruta para modificar el estado de un usuario (activar o desactivar)
-// Se identifica al usuario por su ID en la URL
+/**
+ * PUT /:id
+ * Modifica el estado de un usuario (activo/inactivo) por ID.
+ * @route PUT /usuario/:id
+ * @param {number} id - ID del usuario.
+ */
 router.put("/:id", modificarEstadoUsuario);
 
-// Ruta para crear un nuevo usuario
+/**
+ * POST /
+ * Crea un nuevo usuario.
+ * @route POST /usuario
+ */
 router.post("/", crearUsuario);
 
 // Exportar el enrutador para usarlo en la aplicación principal
