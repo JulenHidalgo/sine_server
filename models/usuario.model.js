@@ -1,58 +1,75 @@
 const db = require("../config/database");
 
 class Usuario {
-  constructor(id, nombre, activo) {
-    this.id = id;
-    this.nombre = nombre;
-    this.activo = activo;
+  static async obtenerTodos() {
+    try {
+      console.log("🔍 Ejecutando consulta: SELECT * FROM usuario");
+      const [rows] = await db.query("SELECT * FROM usuario");
+      console.log("✅ Usuarios encontrados:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
   }
 
-  // Método para mapear un objeto de la base de datos a la clase Usuario
-  static fromRow(row) {
-    return new Usuario(row.id, row.nombre, row.activo);
+  static async obtenerActivos() {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM usuario WHERE activo = 1"
+      );
+      const [rows] = await db.query("SELECT * FROM usuario WHERE activo = 1");
+      console.log("✅ Usuarios activos encontrados:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
   }
 
-  // Obtener todos los usuarios
-  static obtenerTodos(callback) {
-    db.query("SELECT * FROM usuario", (err, results) => {
-      if (err) return callback(err, null);
-      const usuarios = results.map((row) => Usuario.fromRow(row));
-      callback(null, usuarios);
-    });
-  }
+  static async crear(usuario) {
+    try {
+      console.log("🔍 Insertando usuario con nombre:", usuario.nombre);
 
-  // Obtener todos los usuarios con el atributo Activo igual a True
-  static obtenerActivos(callback) {
-    db.query("SELECT * FROM usuario WHERE activo = 1", (err, results) => {
-      if (err) return callback(err, null);
-      const usuarios = results.map((row) => Usuario.fromRow(row));
-      callback(null, usuarios);
-    });
-  }
-
-  // Crear un nuevo usuario
-  static crear(usuario, callback) {
-    const sql = "INSERT INTO usuario (nombre, activo) VALUES (?, 1)";
-    db.query(sql, [usuario.nombre], (err, result) => {
-      if (err) return callback(err, null);
-      usuario.id = result.insertId;
-      callback(null, usuario);
-    });
-  }
-
-  // Modificar el atributo "activo" de un usuario
-  static modificar(usuario, callback) {
-    const sql = "UPDATE usuario SET activo = ? WHERE id = ?";
-    db.query(sql, [usuario.activo, usuario.id], (err, result) => {
-      if (err) return callback(err, null);
-
-      // Verificamos si se modificó algún registro
-      if (result.affectedRows === 0) {
-        return callback(new Error("Usuario no encontrado"), null);
+      if (!usuario || !usuario.nombre) {
+        console.log("❌ Error: El nombre es undefined o vacío.");
+        throw new Error("El nombre del usuario no puede estar vacío.");
       }
 
-      callback(null, usuario);
-    });
+      const sql = "INSERT INTO usuario (nombre, activo) VALUES (?, 1)";
+      const [result] = await db.query(sql, [usuario.nombre]);
+
+      usuario.id = result.insertId;
+      console.log("✅ Usuario insertado con ID:", usuario.id);
+      return usuario;
+    } catch (err) {
+      console.error("❌ Error insertando usuario:", err.message);
+      throw err;
+    }
+  }
+
+  static async modificar(usuario) {
+    try {
+      console.log(
+        "🔍 Modificando usuario ID:",
+        usuario.id,
+        "Estado:",
+        usuario.activo
+      );
+      const sql = "UPDATE usuario SET activo = ? WHERE id = ?";
+      const [result] = await db.query(sql, [usuario.activo, usuario.id]);
+
+      if (result.affectedRows === 0) {
+        console.log("❌ Usuario no encontrado:", usuario.id);
+        return null;
+      }
+
+      console.log("✅ Usuario actualizado correctamente.");
+      return usuario;
+    } catch (err) {
+      console.error("❌ Error modificando usuario:", err.message);
+      throw err;
+    }
   }
 }
 

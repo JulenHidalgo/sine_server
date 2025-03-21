@@ -7,9 +7,9 @@ const ESTADO = Object.freeze({
 });
 
 class Usuario_producto {
-  constructor(nombre, producto_matricula, estado, fecha) {
-    this.nombre = nombre;
-    this.producto_matricula = producto_matricula;
+  constructor(usuario_id, producto_id, estado, fecha) {
+    this.usuario_id = usuario_id;
+    this.producto_id = producto_id;
     this.estado = estado;
     this.fecha = fecha;
   }
@@ -17,57 +17,87 @@ class Usuario_producto {
   // Método para mapear un objeto de la base de datos a la clase Usuario_producto
   static fromRow(row) {
     return new Usuario_producto(
-      row.nombre,
-      row.producto_matricula,
+      row.usuario_id,
+      row.producto_id,
       row.estado,
       row.fecha
     );
   }
 
-  // Obtener todas las entradas en usuario_producto
-  static obtenerTodos(callback) {
-    db.query(
-      "SELECT u.nombre, up.producto_matricula, up.estado, up.fecha FROM usuario_producto up JOIN usuario u ON up.usuario_id = u.id",
-      (err, results) => {
-        if (err) return callback(err, null);
-        const usuario_productos = results.map((row) =>
-          Usuario_producto.fromRow(row)
-        );
-        callback(null, usuario_productos);
-      }
-    );
+  // ✅ Obtener todas las entradas en usuario_producto con async/await
+  static async obtenerTodos() {
+    try {
+      console.log("🔍 Ejecutando consulta: SELECT * FROM usuario_producto");
+      const sql = `
+        SELECT u.id AS usuario_id, u.nombre, up.producto_id, up.estado, up.fecha 
+        FROM usuario_producto up 
+        JOIN usuario u ON up.usuario_id = u.id`;
+      const [rows] = await db.query(sql);
+      console.log("✅ Entradas encontradas:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
   }
 
-  // Obtener las entradas de un producto en usuario_producto
-  static obtenerPorMatricula(usuario_producto, callback) {
-    const sql =
-      "SELECT u.nombre, up.producto_matricula, up.estado, up.fecha FROM usuario_producto up JOIN usuario u ON up.usuario_id = u.id WHERE up.producto_matricula = ?";
-    db.query(sql, [usuario_producto.producto_matricula], (err, results) => {
-      if (err) return callback(err, null);
-      const usuario_productos = results.map((row) =>
-        Usuario_producto.fromRow(row)
+  // ✅ Obtener entradas de usuario_producto por matrícula con async/await
+  static async obtenerPorMatricula(producto_id) {
+    try {
+      console.log("🔍 Buscando usuario_producto con matrícula:", producto_id);
+
+      const sql = `
+        SELECT u.id AS usuario_id, u.nombre, up.producto_id, up.estado, up.fecha 
+        FROM usuario_producto up 
+        JOIN usuario u ON up.usuario_id = u.id 
+        WHERE up.producto_id = ?`;
+      const [rows] = await db.query(sql, [producto_id]);
+
+      console.log("✅ Entradas encontradas:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  // ✅ Crear una nueva entrada en usuario_producto con async/await
+  static async crear({ usuario_id, producto_id, estado, fecha }) {
+    try {
+      console.log(
+        "🔍 Insertando usuario_producto con usuario_id:",
+        usuario_id,
+        "y matrícula:",
+        producto_id
       );
-      callback(null, usuario_productos);
-    });
-  }
 
-  // Crear un nueva entrada en usuario_producto
-  static crear(usuario_producto, callback) {
-    const sql =
-      "INSERT INTO usuario_producto (usuario_id, producto_matricula, estado, fecha) VALUES (?, ?, ?, ?)";
-    db.query(
-      sql,
-      [
-        usuario_producto.usuario,
-        usuario_producto.producto_matricula,
-        usuario_producto.estado,
-        usuario_producto.fecha,
-      ],
-      (err, result) => {
-        if (err) return callback(err, null);
-        callback(null, usuario_producto);
+      if (!usuario_id || !producto_id || !estado || !fecha) {
+        console.log("❌ Error: Datos insuficientes.");
+        throw new Error("Faltan datos en usuario_producto.");
       }
-    );
+
+      const sql = `
+        INSERT INTO usuario_producto (usuario_id, producto_id, estado, fecha) 
+        VALUES (?, ?, ?, ?)`;
+      const [result] = await db.query(sql, [
+        usuario_id,
+        producto_id,
+        estado,
+        fecha,
+      ]);
+
+      console.log("✅ Usuario_producto insertado correctamente.");
+      return {
+        usuario_id,
+        producto_id,
+        estado,
+        fecha,
+        id: result.insertId,
+      };
+    } catch (err) {
+      console.error("❌ Error insertando usuario_producto:", err.message);
+      throw err;
+    }
   }
 }
 

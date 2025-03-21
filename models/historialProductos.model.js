@@ -2,6 +2,7 @@ const db = require("../config/database");
 
 class HistorialProductos {
   constructor(
+    id,
     matricula,
     nombre_almacen,
     ot,
@@ -15,22 +16,24 @@ class HistorialProductos {
     fecha3,
     observaciones
   ) {
-    (this.matricula = matricula),
-      (this.nombre_almacen = nombre_almacen),
-      (this.ot = ot),
-      (this.descripcion_obra = descripcion_obra),
-      (this.estado = estado),
-      (this.empleado1 = empleado1),
-      (this.fecha1 = fecha1),
-      (this.empleado2 = empleado2),
-      (this.fecha2 = fecha2),
-      (this.empleado3 = empleado3),
-      (this.fecha3 = fecha3),
-      (this.observaciones = observaciones);
+    this.id = id;
+    this.matricula = matricula;
+    this.nombre_almacen = nombre_almacen;
+    this.ot = ot;
+    this.descripcion_obra = descripcion_obra;
+    this.estado = estado;
+    this.empleado1 = empleado1;
+    this.fecha1 = fecha1;
+    this.empleado2 = empleado2;
+    this.fecha2 = fecha2;
+    this.empleado3 = empleado3;
+    this.fecha3 = fecha3;
+    this.observaciones = observaciones;
   }
 
   static fromRow(row) {
     return new HistorialProductos(
+      row.id,
       row.matricula,
       row.nombre_almacen,
       row.ot,
@@ -46,12 +49,63 @@ class HistorialProductos {
     );
   }
 
-  static obtenerTodos(callback) {
-    db.query("SELECT * FROM vista_historial_productos", (err, results) => {
-      if (err) return callback(err, null);
-      const informacion = results.map((row) => HistorialProductos.fromRow(row));
-      callback(null, informacion);
-    });
+  // ✅ Obtener todo el historial de productos
+  static async obtenerTodos() {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM vista_historial_productos"
+      );
+      const [rows] = await db.query("SELECT * FROM vista_historial_productos");
+      console.log("✅ Información obtenida:", rows);
+      return rows.map((row) => HistorialProductos.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  // ✅ Obtener historial por matrícula
+  static async obtenerPorMatricula(matricula) {
+    try {
+      console.log("🔍 Buscando historial para matrícula:", matricula);
+
+      const sql = "SELECT * FROM vista_historial_productos WHERE matricula = ?";
+      const [rows] = await db.query(sql, [matricula]);
+
+      if (rows.length === 0) {
+        console.log(
+          "❌ No se encontró historial para la matrícula:",
+          matricula
+        );
+        return null; // Indica que no se encontraron registros
+      }
+
+      console.log("✅ Historial encontrado:", rows);
+      return rows.map((row) => HistorialProductos.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  static async obtenerPorId(id) {
+    try {
+      console.log("🔍 Buscando historial para id:", id);
+
+      const sql = "SELECT * FROM vista_historial_productos WHERE id = ?";
+      const [rows] = await db.query(sql, [id]);
+
+      if (rows.length === 0) {
+        console.log("❌ No se encontró historial para la matrícula:", id);
+        return null; // Indica que no se encontraron registros
+      }
+
+      console.log("✅ Historial encontrado:", rows);
+      return rows.map((row) => HistorialProductos.fromRow(row));
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
   }
 }
 
