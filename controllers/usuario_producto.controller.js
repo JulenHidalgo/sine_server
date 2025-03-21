@@ -1,6 +1,7 @@
+// Importar el modelo Usuario_producto
 const Usuario_producto = require("../models/usuario_producto.model");
 
-// ✅ Obtener todas las entradas en usuario_producto con async/await
+// Controlador para obtener todas las entradas de la tabla usuario_producto
 const obtenerUsuario_productos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todas las entradas en usuario_producto...");
@@ -15,7 +16,7 @@ const obtenerUsuario_productos = async (req, res) => {
   }
 };
 
-// ✅ Obtener entradas de usuario_producto por matrícula con async/await
+// Controlador para obtener entradas de usuario_producto filtradas por matrícula
 const obtenerUsuario_productoPorMatricula = async (req, res) => {
   try {
     const { producto_id } = req.params;
@@ -25,6 +26,7 @@ const obtenerUsuario_productoPorMatricula = async (req, res) => {
       producto_id
     );
 
+    // Si no se encuentran registros, devolver error 404
     if (usuario_productos.length === 0) {
       console.log(
         "❌ No se encontraron registros para la matrícula:",
@@ -48,12 +50,14 @@ const obtenerUsuario_productoPorMatricula = async (req, res) => {
   }
 };
 
-// ✅ Crear una nueva entrada en usuario_producto con async/await
+// Controlador para crear una nueva entrada en la tabla usuario_producto
 const crearUsuario_producto = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
     const { usuario_id, producto_id, estado, fecha } = req.body;
+
+    // Validar que todos los campos necesarios estén presentes
     if (!usuario_id || !producto_id || !estado || !fecha) {
       console.log("❌ Error: Datos insuficientes.");
       return res
@@ -77,6 +81,7 @@ const crearUsuario_producto = async (req, res) => {
   }
 };
 
+// Exportar los controladores
 module.exports = {
   obtenerUsuario_productos,
   crearUsuario_producto,

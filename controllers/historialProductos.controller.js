@@ -1,6 +1,7 @@
+// Importar el modelo HistorialProductos
 const HistorialProductos = require("../models/historialProductos.model");
 
-// ✅ Obtener todo el historial de productos con async/await
+// Controlador para obtener todo el historial de productos
 const obtenerTodos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo historial de productos...");
@@ -13,7 +14,7 @@ const obtenerTodos = async (req, res) => {
   }
 };
 
-// ✅ Obtener historial por matrícula con async/await
+// Controlador para obtener historial por ID
 const obtenerPorId = async (req, res) => {
   try {
     const { id } = req.params;
@@ -21,6 +22,7 @@ const obtenerPorId = async (req, res) => {
 
     const historial = await HistorialProductos.obtenerPorId(id);
 
+    // Si no se encuentra historial para ese ID, devolver 404
     if (!historial) {
       console.log("❌ No se encontró historial para el id:", id);
       return res
@@ -36,7 +38,7 @@ const obtenerPorId = async (req, res) => {
   }
 };
 
-// ✅ Obtener historial por matrícula con async/await
+// Controlador para obtener historial por matrícula
 const obtenerPorMatricula = async (req, res) => {
   try {
     const { matricula } = req.params;
@@ -44,6 +46,7 @@ const obtenerPorMatricula = async (req, res) => {
 
     const historial = await HistorialProductos.obtenerPorMatricula(matricula);
 
+    // Si no se encuentra historial para esa matrícula, devolver 404
     if (!historial) {
       console.log("❌ No se encontró historial para el id:", matricula);
       return res
@@ -59,6 +62,7 @@ const obtenerPorMatricula = async (req, res) => {
   }
 };
 
+// Exportar los controladores
 module.exports = {
   obtenerTodos,
   obtenerPorId,

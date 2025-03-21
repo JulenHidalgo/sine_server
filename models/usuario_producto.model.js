@@ -1,12 +1,16 @@
+// Importar la configuración de la base de datos
 const db = require("../config/database");
 
+// Definición de los posibles estados del producto en manos del usuario
 const ESTADO = Object.freeze({
   RECIBIDO: "Recibido",
   PARA_DEVOLVER: "Para devolver",
   DEVUELTO: "Devuelto",
 });
 
+// Definición de la clase Usuario_producto
 class Usuario_producto {
+  // Constructor para crear una instancia de Usuario_producto
   constructor(usuario_id, producto_id, estado, fecha) {
     this.usuario_id = usuario_id;
     this.producto_id = producto_id;
@@ -14,7 +18,7 @@ class Usuario_producto {
     this.fecha = fecha;
   }
 
-  // Método para mapear un objeto de la base de datos a la clase Usuario_producto
+  // Método para convertir una fila de la base de datos en un objeto de esta clase
   static fromRow(row) {
     return new Usuario_producto(
       row.usuario_id,
@@ -24,7 +28,7 @@ class Usuario_producto {
     );
   }
 
-  // ✅ Obtener todas las entradas en usuario_producto con async/await
+  // Método para obtener todas las entradas de la tabla usuario_producto
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM usuario_producto");
@@ -41,7 +45,7 @@ class Usuario_producto {
     }
   }
 
-  // ✅ Obtener entradas de usuario_producto por matrícula con async/await
+  // Método para obtener las entradas de usuario_producto por matrícula de producto
   static async obtenerPorMatricula(producto_id) {
     try {
       console.log("🔍 Buscando usuario_producto con matrícula:", producto_id);
@@ -61,7 +65,7 @@ class Usuario_producto {
     }
   }
 
-  // ✅ Crear una nueva entrada en usuario_producto con async/await
+  // Método para crear una nueva entrada en la tabla usuario_producto
   static async crear({ usuario_id, producto_id, estado, fecha }) {
     try {
       console.log(
@@ -71,6 +75,7 @@ class Usuario_producto {
         producto_id
       );
 
+      // Validación básica de datos requeridos
       if (!usuario_id || !producto_id || !estado || !fecha) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos en usuario_producto.");
@@ -101,4 +106,5 @@ class Usuario_producto {
   }
 }
 
+// Exportar la clase para su uso en otras partes del proyecto
 module.exports = Usuario_producto;

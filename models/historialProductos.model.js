@@ -1,6 +1,9 @@
+// Importar la configuración de la base de datos
 const db = require("../config/database");
 
+// Definición de la clase HistorialProductos
 class HistorialProductos {
+  // Constructor para crear una instancia de HistorialProductos
   constructor(
     id,
     matricula,
@@ -31,6 +34,7 @@ class HistorialProductos {
     this.observaciones = observaciones;
   }
 
+  // Método para convertir una fila de la base de datos en un objeto HistorialProductos
   static fromRow(row) {
     return new HistorialProductos(
       row.id,
@@ -49,7 +53,7 @@ class HistorialProductos {
     );
   }
 
-  // ✅ Obtener todo el historial de productos
+  // Método para obtener todo el historial de productos desde la vista
   static async obtenerTodos() {
     try {
       console.log(
@@ -57,6 +61,7 @@ class HistorialProductos {
       );
       const [rows] = await db.query("SELECT * FROM vista_historial_productos");
       console.log("✅ Información obtenida:", rows);
+      // Mapear cada fila a una instancia de la clase
       return rows.map((row) => HistorialProductos.fromRow(row));
     } catch (err) {
       console.error("❌ Error en la consulta SQL:", err.message);
@@ -64,7 +69,7 @@ class HistorialProductos {
     }
   }
 
-  // ✅ Obtener historial por matrícula
+  // Método para obtener historial de un producto específico por su matrícula
   static async obtenerPorMatricula(matricula) {
     try {
       console.log("🔍 Buscando historial para matrícula:", matricula);
@@ -72,12 +77,13 @@ class HistorialProductos {
       const sql = "SELECT * FROM vista_historial_productos WHERE matricula = ?";
       const [rows] = await db.query(sql, [matricula]);
 
+      // Si no hay resultados, se retorna null
       if (rows.length === 0) {
         console.log(
           "❌ No se encontró historial para la matrícula:",
           matricula
         );
-        return null; // Indica que no se encontraron registros
+        return null;
       }
 
       console.log("✅ Historial encontrado:", rows);
@@ -88,6 +94,7 @@ class HistorialProductos {
     }
   }
 
+  // Método para obtener historial por ID
   static async obtenerPorId(id) {
     try {
       console.log("🔍 Buscando historial para id:", id);
@@ -95,9 +102,10 @@ class HistorialProductos {
       const sql = "SELECT * FROM vista_historial_productos WHERE id = ?";
       const [rows] = await db.query(sql, [id]);
 
+      // Si no hay resultados, se retorna null
       if (rows.length === 0) {
         console.log("❌ No se encontró historial para la matrícula:", id);
-        return null; // Indica que no se encontraron registros
+        return null;
       }
 
       console.log("✅ Historial encontrado:", rows);
@@ -109,4 +117,5 @@ class HistorialProductos {
   }
 }
 
+// Exportar la clase para su uso en otros módulos
 module.exports = HistorialProductos;
