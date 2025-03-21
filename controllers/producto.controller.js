@@ -1,6 +1,7 @@
+// Importar el modelo Producto
 const Producto = require("../models/producto.model");
 
-// ✅ Obtener todos los productos con async/await
+// Controlador para obtener todos los productos
 const obtenerProductos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todos los productos...");
@@ -13,12 +14,14 @@ const obtenerProductos = async (req, res) => {
   }
 };
 
-// ✅ Crear un nuevo producto con async/await
+// Controlador para crear un nuevo producto
 const crearProducto = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
 
     const { id, matricula, observaciones, almacen_id, obra_ot } = req.body;
+
+    // Verificar que los campos obligatorios estén presentes
     if (!id || !matricula || !almacen_id || !obra_ot) {
       console.log("❌ Error: Datos insuficientes.");
       return res.status(400).json({ error: "Faltan datos en el producto" });
@@ -41,7 +44,7 @@ const crearProducto = async (req, res) => {
   }
 };
 
-// ✅ Modificar observaciones de un producto con async/await
+// Controlador para modificar las observaciones de un producto
 const modificarObservacionesProducto = async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,17 +57,20 @@ const modificarObservacionesProducto = async (req, res) => {
       observaciones
     );
 
+    // Validar que se haya enviado una observación válida
     if (!observaciones || observaciones.trim() === "") {
       console.log("❌ Error: No se envió una observación válida.");
       return res.status(400).json({ error: "Faltan datos (observaciones)" });
     }
 
+    // Llamar al modelo para realizar la modificación
     const resultado = await Producto.modificar({
       id,
       matricula,
       observaciones,
     });
 
+    // Verificar si el producto fue encontrado
     if (!resultado) {
       console.log("❌ Producto no encontrado:", matricula);
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -78,6 +84,7 @@ const modificarObservacionesProducto = async (req, res) => {
   }
 };
 
+// Exportar los controladores
 module.exports = {
   obtenerProductos,
   crearProducto,

@@ -1,6 +1,7 @@
+// Importar el modelo de Usuario
 const Usuario = require("../models/usuario.model");
 
-// Obtener todos los usuarios
+// Controlador para obtener todos los usuarios
 const obtenerUsuarios = async (req, res) => {
   try {
     console.log("🔍 Obteniendo todos los usuarios...");
@@ -13,7 +14,7 @@ const obtenerUsuarios = async (req, res) => {
   }
 };
 
-// Obtener solo los usuarios activos
+// Controlador para obtener solo los usuarios que están activos
 const obtenerUsuariosActivos = async (req, res) => {
   try {
     console.log("🔍 Obteniendo usuarios activos...");
@@ -26,6 +27,7 @@ const obtenerUsuariosActivos = async (req, res) => {
   }
 };
 
+// Controlador para crear un nuevo usuario
 const crearUsuario = async (req, res) => {
   try {
     console.log("🔍 Recibiendo datos en req.body:", req.body);
@@ -38,7 +40,7 @@ const crearUsuario = async (req, res) => {
 
     console.log("🔍 Creando usuario con nombre:", nombre);
 
-    // 📌 Aquí pasamos el nombre correctamente SIN usar `new Usuario()`
+    // Llamar al modelo para crear el usuario
     const usuarioCreado = await Usuario.crear({ nombre });
 
     console.log("✅ Usuario creado:", usuarioCreado);
@@ -49,7 +51,7 @@ const crearUsuario = async (req, res) => {
   }
 };
 
-// Modificar el estado "activo" de un usuario
+// Controlador para modificar el estado "activo" de un usuario
 const modificarEstadoUsuario = async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,12 +59,14 @@ const modificarEstadoUsuario = async (req, res) => {
 
     console.log("🔍 Modificando usuario:", { id, activo });
 
+    // Validar que se haya recibido el campo "activo"
     if (activo === undefined) {
       return res.status(400).json({ error: "Faltan datos (activo)" });
     }
 
     const resultado = await Usuario.modificar({ id, activo });
 
+    // Si no se encuentra el usuario, devolver 404
     if (!resultado) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
@@ -75,6 +79,7 @@ const modificarEstadoUsuario = async (req, res) => {
   }
 };
 
+// Exportar los controladores
 module.exports = {
   obtenerUsuarios,
   obtenerUsuariosActivos,

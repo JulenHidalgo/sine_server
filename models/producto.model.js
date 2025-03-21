@@ -1,6 +1,9 @@
+// Importar la configuración de la base de datos
 const db = require("../config/database");
 
+// Definición de la clase Producto
 class Producto {
+  // Constructor para crear una instancia de Producto
   constructor(id, matricula, observaciones, almacen_id, obra_ot) {
     this.id = id;
     this.matricula = matricula;
@@ -9,7 +12,7 @@ class Producto {
     this.obra_ot = obra_ot;
   }
 
-  // Método para mapear un objeto de la base de datos a la clase Producto
+  // Método para convertir una fila de la base de datos en un objeto Producto
   static fromRow(row) {
     return new Producto(
       row.id,
@@ -20,7 +23,7 @@ class Producto {
     );
   }
 
-  // ✅ Obtener todos los productos con async/await
+  // Método para obtener todos los productos desde la base de datos
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM producto");
@@ -33,11 +36,12 @@ class Producto {
     }
   }
 
-  // ✅ Crear un nuevo producto con async/await
+  // Método para crear un nuevo producto en la base de datos
   static async crear(producto) {
     try {
       console.log("🔍 Insertando producto con matrícula:", producto.matricula);
 
+      // Validación de los campos requeridos
       if (
         !producto.id ||
         !producto.matricula ||
@@ -66,7 +70,7 @@ class Producto {
     }
   }
 
-  // ✅ Modificar observaciones de un producto con async/await
+  // Método para modificar las observaciones de un producto
   static async modificar(producto) {
     try {
       console.log(
@@ -76,6 +80,7 @@ class Producto {
         producto.observaciones
       );
 
+      // Validación de datos necesarios para la modificación
       if (!producto.id || !producto.matricula || !producto.observaciones) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos (observaciones).");
@@ -88,6 +93,7 @@ class Producto {
         producto.matricula,
       ]);
 
+      // Verificar si se modificó algún registro
       if (result.affectedRows === 0) {
         console.log("❌ Producto no encontrado:", producto.matricula);
         return null;
@@ -102,4 +108,5 @@ class Producto {
   }
 }
 
+// Exportar la clase para que pueda ser utilizada en otros módulos
 module.exports = Producto;

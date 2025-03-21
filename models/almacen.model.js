@@ -1,17 +1,20 @@
+// Importar la configuración de la base de datos
 const db = require("../config/database");
 
+// Definición de la clase Almacen
 class Almacen {
+  // Constructor para crear una instancia de Almacen
   constructor(id, nombre) {
     this.id = id;
     this.nombre = nombre;
   }
 
-  // Método para mapear un objeto de la base de datos a la clase Almacen
+  // Método para convertir una fila de la base de datos en un objeto Almacen
   static fromRow(row) {
     return new Almacen(row.id, row.nombre);
   }
 
-  // ✅ Obtener todos los almacenes con async/await
+  // Método para obtener todos los almacenes desde la base de datos
   static async obtenerTodos() {
     try {
       console.log("🔍 Ejecutando consulta: SELECT * FROM almacen");
@@ -24,11 +27,12 @@ class Almacen {
     }
   }
 
-  // ✅ Crear un nuevo almacén con async/await
+  // Método para crear un nuevo almacén en la base de datos
   static async crear(almacen) {
     try {
       console.log("🔍 Insertando almacén con nombre:", almacen.nombre);
 
+      // Validación: el nombre del almacén es obligatorio
       if (!almacen.nombre) {
         console.log("❌ Error: El nombre del almacén es obligatorio.");
         throw new Error("Faltan datos en el almacén.");
@@ -46,4 +50,5 @@ class Almacen {
   }
 }
 
+// Exportar la clase para que pueda ser utilizada en otros módulos
 module.exports = Almacen;
