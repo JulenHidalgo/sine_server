@@ -42,6 +42,25 @@ class Almacen {
   }
 
   /**
+   * Obtiene todos los almacenes con el campo activo a true desde la base de datos.
+   * @returns {Promise<Array>} Lista de almacenes activos.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
+  static async obtenerActivos() {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM almacen WHERE activo = 1"
+      );
+      const [rows] = await db.query("SELECT * FROM almacen WHERE activo = 1");
+      console.log("✅ Almacenes encontrados:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  /**
    * Crea un nuevo almacén en la base de datos.
    * @param {Object} almacen - Objeto que contiene el nombre del almacén.
    * @param {string} almacen.nombre - Nombre del nuevo almacén.
