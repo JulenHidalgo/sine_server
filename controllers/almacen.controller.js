@@ -10,6 +10,7 @@ const Almacen = require("../models/almacen.model");
  * @typedef {Object} Response
  * @description Objeto de respuesta HTTP (Express).
  */
+
 /**
  * Controlador para obtener todos los almacenes.
  * @param {Request} req - Objeto de solicitud HTTP.
@@ -24,6 +25,44 @@ const obtenerAlmacenes = async (req, res) => {
   } catch (err) {
     console.error("❌ Error obteniendo almacenes:", err.message);
     res.status(500).json({ error: "Error obteniendo almacenes" });
+  }
+};
+
+/**
+ * Controlador para obtener todos los almacenes con el campo activo a true.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerAlmacenesActivos = async (req, res) => {
+  try {
+    console.log("🔍 Obteniendo todos los almacenes activos...");
+    const almacenes = await Almacen.obtenerActivos();
+    console.log("✅ Almacenes obtenidos:", almacenes);
+    res.json(almacenes);
+  } catch (err) {
+    console.error("❌ Error obteniendo almacenes activos:", err.message);
+    res.status(500).json({ error: "Error obteniendo almacenes activos" });
+  }
+};
+
+/**
+ * Controlador para modificar el nombre de un almacén.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const modificarAlmacen = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre } = req.body;
+
+    console.log("🔍 Modificando el almacen con id " + id);
+
+    const almacenes = await Almacen.modificarAlmacen(id, nombre);
+    console.log("✅ Almacenes obtenidos:", almacenes);
+    res.json(almacenes);
+  } catch (err) {
+    console.error("❌ Error obteniendo almacenes activos:", err.message);
+    res.status(500).json({ error: "Error obteniendo almacenes activos" });
   }
 };
 
@@ -58,5 +97,7 @@ const crearAlmacen = async (req, res) => {
 // Exportar los controladores
 module.exports = {
   obtenerAlmacenes,
+  obtenerAlmacenesActivos,
+  modificarAlmacen,
   crearAlmacen,
 };

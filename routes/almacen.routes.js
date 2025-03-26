@@ -9,6 +9,8 @@ const router = express.Router();
 // Importar las funciones del controlador de almacenes
 const {
   obtenerAlmacenes,
+  obtenerAlmacenesActivos,
+  modificarAlmacen,
   crearAlmacen,
 } = require("../controllers/almacen.controller");
 
@@ -18,6 +20,20 @@ const {
  * @route GET /almacen
  */
 router.get("/", obtenerAlmacenes);
+
+/**
+ * GET /
+ * Obtiene todos los almacenes registrados con el campo activo a true.
+ * @route GET /almacen/activos
+ */
+router.get("/activos", obtenerAlmacenesActivos);
+
+/**
+ * PUT /
+ * Modifica el atributo nombre de un almacen.
+ * @route PUT /almacen/:id
+ */
+router.get("/:id", modificarAlmacen);
 
 /**
  * POST /
