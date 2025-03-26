@@ -29,6 +29,25 @@ const obtenerAlmacenes = async (req, res) => {
 };
 
 /**
+ * Controlador para obtener el almacen por id.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerAlmacenPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    console.log("🔍 Obteniendo el almacen con id " + id + "...");
+    const almacenes = await Almacen.obtenerPorId(id);
+    console.log("✅ Almacenes obtenidos:", almacenes);
+    res.json(almacenes);
+  } catch (err) {
+    console.error("❌ Error obteniendo almacenes:", err.message);
+    res.status(500).json({ error: "Error obteniendo almacenes" });
+  }
+};
+
+/**
  * Controlador para obtener todos los almacenes con el campo activo a true.
  * @param {Request} req - Objeto de solicitud HTTP.
  * @param {Response} res - Objeto de respuesta HTTP.
@@ -97,6 +116,7 @@ const crearAlmacen = async (req, res) => {
 // Exportar los controladores
 module.exports = {
   obtenerAlmacenes,
+  obtenerAlmacenPorId,
   obtenerAlmacenesActivos,
   modificarAlmacen,
   crearAlmacen,

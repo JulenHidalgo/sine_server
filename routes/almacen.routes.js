@@ -9,6 +9,7 @@ const router = express.Router();
 // Importar las funciones del controlador de almacenes
 const {
   obtenerAlmacenes,
+  obtenerAlmacenPorId,
   obtenerAlmacenesActivos,
   modificarAlmacen,
   crearAlmacen,
@@ -20,6 +21,13 @@ const {
  * @route GET /almacen
  */
 router.get("/", obtenerAlmacenes);
+
+/**
+ * GET /
+ * Obtiene el almacen por id.
+ * @route GET /almacen/:id
+ */
+router.get("/:id", obtenerAlmacenPorId);
 
 /**
  * GET /
