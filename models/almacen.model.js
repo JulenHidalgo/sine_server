@@ -155,7 +155,7 @@ class Almacen {
    */
   static async modificarActivoAlmacen(id, activo) {
     try {
-      if (!id || !activo) {
+      if (!id || activo !== null) {
         throw new Error("ID y activo del almacén son obligatorios.");
       }
 
