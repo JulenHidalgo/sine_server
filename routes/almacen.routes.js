@@ -12,6 +12,7 @@ const {
   obtenerAlmacenPorId,
   obtenerAlmacenesActivos,
   modificarAlmacen,
+  modificarEstadoAlmacen,
   crearAlmacen,
 } = require("../controllers/almacen.controller");
 
@@ -27,7 +28,7 @@ router.get("/", obtenerAlmacenes);
  * Obtiene el almacen por id.
  * @route GET /almacen/:id
  */
-router.get("/:id", obtenerAlmacenPorId);
+router.get("/id/:id", obtenerAlmacenPorId);
 
 /**
  * GET /
@@ -42,6 +43,13 @@ router.get("/activos", obtenerAlmacenesActivos);
  * @route PUT /almacen/:id
  */
 router.put("/:id", modificarAlmacen);
+
+/**
+ * PUT /
+ * Modifica el atributo estado de un almacen.
+ * @route PUT /almacen/estado/:id
+ */
+router.put("/estado/:id", modificarEstadoAlmacen);
 
 /**
  * POST /
