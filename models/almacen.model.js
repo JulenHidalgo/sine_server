@@ -42,6 +42,25 @@ class Almacen {
   }
 
   /**
+   * Obtiene todos el almacen con id requerido desde la base de datos.
+   * @returns {Promise<Array>} Lista de almacenes.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
+  static async obtenerPorId(id) {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM almacen WHERE id = " + id
+      );
+      const [rows] = await db.query("SELECT * FROM almacen WHERE id = ?", [id]);
+      console.log("✅ Almacenes encontrados:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  /**
    * Obtiene todos los almacenes con el campo activo a true desde la base de datos.
    * @returns {Promise<Array>} Lista de almacenes activos.
    * @throws {Error} Si ocurre un error durante la consulta.
