@@ -90,19 +90,22 @@ const modificarAlmacen = async (req, res) => {
  * @param {Request} req - Objeto de solicitud HTTP.
  * @param {Response} res - Objeto de respuesta HTTP.
  */
-const modificarEstadoAlmacen = async (req, res) => {
+const modificarActivoAlmacen = async (req, res) => {
   try {
     const { id } = req.params;
     const { activo } = req.body;
 
-    console.log("🔍 Modificando el almacen con id " + id);
+    console.log("🔍 Modificando el estado del almacen con id " + id);
 
-    const almacenes = await Almacen.modificarEstadoAlmacen(id, activo);
-    console.log("✅ Almacenes obtenidos:", almacenes);
-    res.json(almacenes);
+    const almacenes = await Almacen.modificarActivoAlmacen(id, activo);
   } catch (err) {
-    console.error("❌ Error obteniendo almacenes activos:", err.message);
-    res.status(500).json({ error: "Error obteniendo almacenes activos" });
+    console.error(
+      "❌ Error obteniendo modificando el campo activo del almacen:",
+      err.message
+    );
+    res.status(500).json({
+      error: "Error obteniendo modificando el campo activo del almacen",
+    });
   }
 };
 
@@ -140,6 +143,6 @@ module.exports = {
   obtenerAlmacenPorId,
   obtenerAlmacenesActivos,
   modificarAlmacen,
-  modificarEstadoAlmacen,
+  modificarActivoAlmacen,
   crearAlmacen,
 };
