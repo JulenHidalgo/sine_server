@@ -98,6 +98,11 @@ const modificarActivoAlmacen = async (req, res) => {
     console.log("🔍 Modificando el estado del almacen con id " + id);
 
     await Almacen.modificarActivoAlmacen(id, activo);
+
+    // ✅ Aquí devuelves una respuesta al cliente
+    res.status(200).json({
+      message: `Estado del almacén ${id} actualizado a ${activo}`,
+    });
   } catch (err) {
     console.error(
       "❌ Error obteniendo modificando el campo activo del almacen:",
