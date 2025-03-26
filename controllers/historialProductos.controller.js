@@ -26,9 +26,9 @@ const obtenerTodos = async (req, res) => {
     historial.forEach((item) => {
       ["fecha1", "fecha2", "fecha3"].forEach((campo) => {
         if (item[campo] instanceof Date) {
-          const iso = item[campo].toISOString(); // Ej: "2025-03-26T16:35:00.000Z"
+          const iso = item[campo].toISOString();
           const fechaFormateada = iso.slice(0, 10) + " " + iso.slice(11, 19);
-          item[campo] = fechaFormateada; // Ej: "2025-03-26 16:35:00.00"
+          item[campo] = fechaFormateada;
         }
       });
     });
