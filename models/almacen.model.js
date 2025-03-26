@@ -94,6 +94,20 @@ class Almacen {
         }
 
         console.log("✅ Productos actualizados correctamente.");
+
+        //Eliminar de la base de datos el almacén que ya no tiene productos.
+        console.log(`🗑 Eliminando almacén ID ${id} sin productos asociados`);
+        const sqlDelete = "DELETE FROM almacen WHERE id = ?";
+        const [resultDelete] = await db.query(sqlDelete, [id]);
+
+        if (resultDelete.affectedRows === 0) {
+          console.log(
+            "ℹ️ No se eliminó ningún almacén, puede que ya no exista:",
+            id
+          );
+        }
+
+        console.log("✅ Almacen eliminado correctamente.");
       } else {
         console.log(`✏️ Renombrando almacén ID ${id} a '${nombre}'`);
         const sql = "UPDATE almacen SET nombre = ? WHERE id = ?";
