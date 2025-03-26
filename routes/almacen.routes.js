@@ -33,7 +33,7 @@ router.get("/activos", obtenerAlmacenesActivos);
  * Modifica el atributo nombre de un almacen.
  * @route PUT /almacen/:id
  */
-router.get("/:id", modificarAlmacen);
+router.put("/:id", modificarAlmacen);
 
 /**
  * POST /
