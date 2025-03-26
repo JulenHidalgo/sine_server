@@ -7,7 +7,7 @@ const db = require("../config/database");
 class HistorialProductos {
   /**
    * Crea una instancia de HistorialProductos.
-   * @param {number} id - Identificador del historial.
+   * @param {number} producto_id - Identificador del historial.
    * @param {string} matricula - Matrícula del producto.
    * @param {string} nombre_almacen - Nombre del almacén.
    * @param {string} ot - Orden de trabajo de la obra.
@@ -22,7 +22,7 @@ class HistorialProductos {
    * @param {string} observaciones - Observaciones generales.
    */
   constructor(
-    id,
+    producto_id,
     matricula,
     nombre_almacen,
     ot,
@@ -36,7 +36,7 @@ class HistorialProductos {
     fecha3,
     observaciones
   ) {
-    this.id = id;
+    this.producto_id = producto_id;
     this.matricula = matricula;
     this.nombre_almacen = nombre_almacen;
     this.ot = ot;
@@ -58,7 +58,7 @@ class HistorialProductos {
    */
   static fromRow(row) {
     return new HistorialProductos(
-      row.id,
+      row.producto_id,
       row.matricula,
       row.nombre_almacen,
       row.ot,
