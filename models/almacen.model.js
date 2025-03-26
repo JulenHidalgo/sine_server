@@ -153,14 +153,14 @@ class Almacen {
    * @returns {Promise<void>}
    * @throws {Error} Si ocurre un error durante la consulta.
    */
-  static async modificarEstadoAlmacen(id, activo) {
+  static async modificarActivoAlmacen(id, activo) {
     try {
       if (!id || !activo) {
-        throw new Error("ID y nombre del almacén son obligatorios.");
+        throw new Error("ID y activo del almacén son obligatorios.");
       }
 
       console.log(
-        `✏️ Modificando campo activo del almacén ID ${id} a '${estado}'`
+        `✏️ Modificando campo activo del almacén ID ${id} a '${activo}'`
       );
       const sql = "UPDATE almacen SET activo = ? WHERE id = ?";
       const [result] = await db.query(sql, [activo, id]);
