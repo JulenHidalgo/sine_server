@@ -145,6 +145,38 @@ class Almacen {
   }
 
   /**
+   * Modifica el atributo estado de un almacen
+   *
+   * @param {number} id - ID del almacén a modificar.
+   * @param {string} activo - Nuevo nombre del almacén.
+   *
+   * @returns {Promise<void>}
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
+  static async modificarEstadoAlmacen(id, activo) {
+    try {
+      if (!id || !activo) {
+        throw new Error("ID y nombre del almacén son obligatorios.");
+      }
+
+      console.log(
+        `✏️ Modificando campo activo del almacén ID ${id} a '${estado}'`
+      );
+      const sql = "UPDATE almacen SET activo = ? WHERE id = ?";
+      const [result] = await db.query(sql, [activo, id]);
+
+      if (result.affectedRows === 0) {
+        console.log("❌ Almacén no encontrado:", id);
+      }
+
+      console.log("✅ Almacén renombrado correctamente.");
+    } catch (err) {
+      console.error("❌ Error en modificarAlmacen:", err.message);
+      throw err;
+    }
+  }
+
+  /**
    * Verifica si existe un almacén con el nombre dado.
    *
    * @param {string} nombre - Nombre del almacén a buscar.

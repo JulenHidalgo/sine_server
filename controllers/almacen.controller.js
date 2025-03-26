@@ -86,18 +86,18 @@ const modificarAlmacen = async (req, res) => {
 };
 
 /**
- * Controlador para modificar el nombre de un almacén.
+ * Controlador para modificar el atributo activo de un almacén.
  * @param {Request} req - Objeto de solicitud HTTP.
  * @param {Response} res - Objeto de respuesta HTTP.
  */
 const modificarEstadoAlmacen = async (req, res) => {
   try {
     const { id } = req.params;
-    const { estado } = req.body;
+    const { activo } = req.body;
 
     console.log("🔍 Modificando el almacen con id " + id);
 
-    const almacenes = await Almacen.modificarAlmacen(id, nombre);
+    const almacenes = await Almacen.modificarEstadoAlmacen(id, activo);
     console.log("✅ Almacenes obtenidos:", almacenes);
     res.json(almacenes);
   } catch (err) {
