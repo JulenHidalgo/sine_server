@@ -49,7 +49,7 @@ router.put("/:id", modificarAlmacen);
  * Modifica el atributo estado de un almacen.
  * @route PUT /almacen/estado/:id
  */
-router.put("/estado/:id", modificarActivoAlmacen);
+router.put("/activo/:id", modificarActivoAlmacen);
 
 /**
  * POST /

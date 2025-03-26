@@ -159,9 +159,6 @@ class Almacen {
         throw new Error("ID y activo del almacén son obligatorios.");
       }
 
-      console.log(
-        `✏️ Modificando campo activo del almacén ID ${id} a '${activo}'`
-      );
       const sql = "UPDATE almacen SET activo = ? WHERE id = ?";
       const [result] = await db.query(sql, [activo, id]);
 
