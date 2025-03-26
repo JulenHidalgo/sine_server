@@ -10,6 +10,7 @@ const router = express.Router();
 const {
   obtenerAlmacenes,
   obtenerAlmacenesActivos,
+  modificarAlmacen,
   crearAlmacen,
 } = require("../controllers/almacen.controller");
 
@@ -26,6 +27,13 @@ router.get("/", obtenerAlmacenes);
  * @route GET /almacen/activos
  */
 router.get("/activos", obtenerAlmacenesActivos);
+
+/**
+ * PUT /
+ * Modifica el atributo nombre de un almacen.
+ * @route PUT /almacen/:id
+ */
+router.get("/:id", modificarAlmacen);
 
 /**
  * POST /
