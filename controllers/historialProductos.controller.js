@@ -21,6 +21,23 @@ const obtenerTodos = async (req, res) => {
     console.log("🔍 Obteniendo historial de productos...");
     const historial = await HistorialProductos.obtenerTodos();
     console.log("✅ Historial obtenido:", historial);
+    for (let i = 0; i < historial.length; i++) {
+      if (historial[i].fecha1 != null) {
+        historial[i].fecha1 =
+          historial[i].fecha1.toString().slice(0, 10) +
+          historial[i].fecha1.toString().slice(11, 21);
+        if (historial[i].fecha2 != null) {
+          historial[i].fecha2 =
+            historial[i].fecha2.toString().slice(0, 10) +
+            historial[i].fecha2.toString().slice(11, 21);
+          if (historial[i].fecha3 != null) {
+            historial[i].fecha3 =
+              historial[i].fecha3.toString().slice(0, 10) +
+              historial[i].fecha3.toString().slice(11, 21);
+          }
+        }
+      }
+    }
     res.json(historial);
   } catch (err) {
     console.error("❌ Error obteniendo historial de productos:", err.message);
