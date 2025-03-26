@@ -155,21 +155,25 @@ class Almacen {
    */
   static async modificarActivoAlmacen(id, activo) {
     try {
-      if (!id || activo === null) {
-        throw new Error("ID y activo del almacén son obligatorios.");
-      }
+      const { id } = req.params;
+      const { activo } = req.body;
 
-      const sql = "UPDATE almacen SET activo = ? WHERE id = ?";
-      const [result] = await db.query(sql, [activo, id]);
+      console.log("🔍 Modificando el estado del almacen con id " + id);
 
-      if (result.affectedRows === 0) {
-        console.log("❌ Almacén no encontrado:", id);
-      }
+      await Almacen.modificarActivoAlmacen(id, activo);
 
-      console.log("✅ Almacén renombrado correctamente.");
+      // ✅ Aquí devuelves una respuesta al cliente
+      res.status(200).json({
+        message: `Estado del almacén ${id} actualizado a ${activo}`,
+      });
     } catch (err) {
-      console.error("❌ Error en modificarAlmacen:", err.message);
-      throw err;
+      console.error(
+        "❌ Error obteniendo modificando el campo activo del almacen:",
+        err.message
+      );
+      res.status(500).json({
+        error: "Error obteniendo modificando el campo activo del almacen",
+      });
     }
   }
 
