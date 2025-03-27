@@ -60,11 +60,11 @@ const obtenerUsuarioNombre = async (req, res) => {
 
     if (usuario.length === 0) {
       console.log("❌ Usuario no encontrado:", nombre);
-      res.status(404).json({ error: "Usuario no encontrado" });
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
     console.log("✅ Usuario obtenidos:", usuario);
-    res.status(200).json(usuario);
+    return res.status(200).json(usuario);
   } catch (err) {
     console.error("❌ Error obteniendo usuario por nombre:", err.message);
     res.status(500).json({ error: "Error obteniendo usuario por nombre" });
