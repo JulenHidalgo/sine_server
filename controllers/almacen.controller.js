@@ -78,11 +78,11 @@ const obtenerAlmacenNombre = async (req, res) => {
 
     if (almacen.length === 0) {
       console.log("❌ Almacen no encontrado:", nombre);
-      res.status(404).json({ error: "Almacen no encontrado" });
+      return res.status(404).json({ error: "Almacen no encontrado" });
     }
 
     console.log("✅ Almacen obtenido:", almacen);
-    res.status(200).json(almacen);
+    return res.status(200).json(almacen);
   } catch (err) {
     console.error("❌ Error obteniendo almacenes por nombre:", err.message);
     res.status(500).json({ error: "Error obteniendo almacenes por nombre" });
