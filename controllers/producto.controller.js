@@ -83,10 +83,7 @@ const modificarObservacionesProducto = async (req, res) => {
       return res.status(400).json({ error: "Faltan datos (observaciones)" });
     }
 
-    const resultado = await Producto.modificar({
-      id,
-      observaciones,
-    });
+    const resultado = await Producto.modificar(id, observaciones);
 
     if (!resultado) {
       console.log("❌ Producto no encontrado:", id);
