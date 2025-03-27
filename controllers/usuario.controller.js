@@ -46,6 +46,32 @@ const obtenerUsuariosActivos = async (req, res) => {
 };
 
 /**
+ * Controlador para obtener un usuario mediante el nombre.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerUsuarioNombre = async (req, res) => {
+  try {
+    const { nombre } = req.params;
+
+    console.log("🔍 Comprobando si existe el usuario");
+
+    const usuario = await Usuario.obtenerPorNombre(nombre);
+
+    if (usuario.length === 0) {
+      console.log("❌ Usuario no encontrado:", nombre);
+      res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    console.log("✅ Usuario obtenidos:", usuario);
+    res.status(200).json(usuario);
+  } catch (err) {
+    console.error("❌ Error obteniendo usuario por nombre:", err.message);
+    res.status(500).json({ error: "Error obteniendo usuario por nombre" });
+  }
+};
+
+/**
  * Controlador para crear un nuevo usuario.
  * @param {Request} req - Objeto de solicitud HTTP.
  * @param {Response} res - Objeto de respuesta HTTP.
@@ -107,5 +133,6 @@ module.exports = {
   obtenerUsuarios,
   obtenerUsuariosActivos,
   crearUsuario,
+  obtenerUsuarioNombre,
   modificarEstadoUsuario,
 };

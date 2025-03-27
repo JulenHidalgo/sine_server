@@ -11,6 +11,7 @@ const {
   obtenerUsuarios,
   obtenerUsuariosActivos,
   modificarEstadoUsuario,
+  obtenerUsuarioNombre,
   crearUsuario,
 } = require("../controllers/usuario.controller");
 
@@ -27,6 +28,16 @@ router.get("/", obtenerUsuarios);
  * @route GET /usuario/activos
  */
 router.get("/activos", obtenerUsuariosActivos);
+
+/**
+ * GET /activos
+ * Comprueba si existe un usuario con el nombre proporcionado.
+ * Si existe, devuelve un codigo 200.
+ * Si no existe, devuelve un codigo 404.
+ * @route GET /usuario/existe/:nombre
+ * @param {string} nombre - Nombre de usuario.
+ */
+router.get("/existe/:nombre", obtenerUsuarioNombre);
 
 /**
  * PUT /:id
