@@ -82,6 +82,7 @@ class Usuario {
       const [result] = await db.query(sql, [usuario.nombre]);
 
       usuario.id = result.insertId;
+      usuario.activo = 1;
       console.log("✅ Usuario insertado con ID:", usuario.id);
       return usuario;
     } catch (err) {
