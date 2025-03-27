@@ -13,6 +13,7 @@ const {
   obtenerAlmacenesActivos,
   modificarAlmacen,
   modificarActivoAlmacen,
+  obtenerAlmacenNombre,
   crearAlmacen,
 } = require("../controllers/almacen.controller");
 
@@ -36,6 +37,13 @@ router.get("/id/:id", obtenerAlmacenPorId);
  * @route GET /almacen/activos
  */
 router.get("/activos", obtenerAlmacenesActivos);
+
+/**
+ * GET /
+ * Obtiene el almacen cuyo nombre coincide con el requerido.
+ * @route GET /almacen/existe/:nombre
+ */
+router.get("/existe/:nombre", obtenerAlmacenNombre);
 
 /**
  * PUT /

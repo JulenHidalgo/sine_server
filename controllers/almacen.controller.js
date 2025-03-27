@@ -65,6 +65,29 @@ const obtenerAlmacenesActivos = async (req, res) => {
 };
 
 /**
+ * Controlador para obtener el almacen cuyo nombre coincide con el requerido.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerAlmacenNombre = async (req, res) => {
+  try {
+    console.log("🔍 Obteniendo almacen por nombre");
+    const almacen = await Almacen.obtenerPorNombre(nombre);
+
+    if (almacen.length === 0) {
+      console.log("❌ Almacen no encontrado:", nombre);
+      res.status(404).json({ error: "Almacen no encontrado" });
+    }
+
+    console.log("✅ Almacen obtenido:", almacen);
+    res.status(200).json(almacen);
+  } catch (err) {
+    console.error("❌ Error obteniendo almacenes por nombre:", err.message);
+    res.status(500).json({ error: "Error obteniendo almacenes por nombre" });
+  }
+};
+
+/**
  * Controlador para modificar el nombre de un almacén.
  * @param {Request} req - Objeto de solicitud HTTP.
  * @param {Response} res - Objeto de respuesta HTTP.
@@ -149,5 +172,6 @@ module.exports = {
   obtenerAlmacenesActivos,
   modificarAlmacen,
   modificarActivoAlmacen,
+  obtenerAlmacenNombre,
   crearAlmacen,
 };
