@@ -21,10 +21,10 @@ const obtenerAlmacenes = async (req, res) => {
     console.log("🔍 Obteniendo todos los almacenes...");
     const almacenes = await Almacen.obtenerTodos();
     console.log("✅ Almacenes obtenidos:", almacenes);
-    res.json(almacenes);
+    return res.json(almacenes);
   } catch (err) {
     console.error("❌ Error obteniendo almacenes:", err.message);
-    res.status(500).json({ error: "Error obteniendo almacenes" });
+    return res.status(500).json({ error: "Error obteniendo almacenes" });
   }
 };
 
@@ -40,10 +40,10 @@ const obtenerAlmacenPorId = async (req, res) => {
     console.log("🔍 Obteniendo el almacen con id " + id + "...");
     const almacenes = await Almacen.obtenerPorId(id);
     console.log("✅ Almacenes obtenidos:", almacenes);
-    res.json(almacenes);
+    return res.json(almacenes);
   } catch (err) {
     console.error("❌ Error obteniendo almacenes:", err.message);
-    res.status(500).json({ error: "Error obteniendo almacenes" });
+    return res.status(500).json({ error: "Error obteniendo almacenes" });
   }
 };
 
@@ -57,10 +57,12 @@ const obtenerAlmacenesActivos = async (req, res) => {
     console.log("🔍 Obteniendo todos los almacenes activos...");
     const almacenes = await Almacen.obtenerActivos();
     console.log("✅ Almacenes obtenidos:", almacenes);
-    res.json(almacenes);
+    return res.json(almacenes);
   } catch (err) {
     console.error("❌ Error obteniendo almacenes activos:", err.message);
-    res.status(500).json({ error: "Error obteniendo almacenes activos" });
+    return res
+      .status(500)
+      .json({ error: "Error obteniendo almacenes activos" });
   }
 };
 
@@ -85,7 +87,9 @@ const obtenerAlmacenNombre = async (req, res) => {
     return res.status(200).json(almacen);
   } catch (err) {
     console.error("❌ Error obteniendo almacenes por nombre:", err.message);
-    res.status(500).json({ error: "Error obteniendo almacenes por nombre" });
+    return res
+      .status(500)
+      .json({ error: "Error obteniendo almacenes por nombre" });
   }
 };
 
@@ -103,10 +107,12 @@ const modificarAlmacen = async (req, res) => {
 
     const almacenes = await Almacen.modificarAlmacen(id, nombre);
     console.log("✅ Almacenes obtenidos:", almacenes);
-    res.json(almacenes);
+    return res.json(almacenes);
   } catch (err) {
     console.error("❌ Error obteniendo almacenes activos:", err.message);
-    res.status(500).json({ error: "Error obteniendo almacenes activos" });
+    return res
+      .status(500)
+      .json({ error: "Error obteniendo almacenes activos" });
   }
 };
 
@@ -125,7 +131,7 @@ const modificarActivoAlmacen = async (req, res) => {
     await Almacen.modificarActivoAlmacen(id, activo);
 
     // ✅ Aquí devuelves una respuesta al cliente
-    res.status(200).json({
+    return res.status(200).json({
       message: `Estado del almacén ${id} actualizado a ${activo}`,
     });
   } catch (err) {
@@ -133,7 +139,7 @@ const modificarActivoAlmacen = async (req, res) => {
       "❌ Error obteniendo modificando el campo activo del almacen:",
       err.message
     );
-    res.status(500).json({
+    return res.status(500).json({
       error: "Error obteniendo modificando el campo activo del almacen",
     });
   }
@@ -160,10 +166,10 @@ const crearAlmacen = async (req, res) => {
     const almacenCreado = await Almacen.crear(new Almacen(null, nombre));
     console.log("✅ Almacén creado:", almacenCreado);
 
-    res.json(almacenCreado);
+    return res.json(almacenCreado);
   } catch (err) {
     console.error("❌ Error insertando almacén:", err.message);
-    res.status(500).json({ error: "Error insertando almacén" });
+    return res.status(500).json({ error: "Error insertando almacén" });
   }
 };
 

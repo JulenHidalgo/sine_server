@@ -21,10 +21,10 @@ const obtenerUsuarios = async (req, res) => {
     console.log("🔍 Obteniendo todos los usuarios...");
     const usuarios = await Usuario.obtenerTodos();
     console.log("✅ Usuarios obtenidos:", usuarios);
-    res.json(usuarios);
+    return res.json(usuarios);
   } catch (err) {
     console.error("❌ Error obteniendo usuarios:", err.message);
-    res.status(500).json({ error: "Error obteniendo usuarios" });
+    return res.status(500).json({ error: "Error obteniendo usuarios" });
   }
 };
 
@@ -38,10 +38,10 @@ const obtenerUsuariosActivos = async (req, res) => {
     console.log("🔍 Obteniendo usuarios activos...");
     const usuarios = await Usuario.obtenerActivos();
     console.log("✅ Usuarios activos obtenidos:", usuarios);
-    res.json(usuarios);
+    return res.json(usuarios);
   } catch (err) {
     console.error("❌ Error obteniendo usuarios activos:", err.message);
-    res.status(500).json({ error: "Error obteniendo usuarios activos" });
+    return res.status(500).json({ error: "Error obteniendo usuarios activos" });
   }
 };
 
@@ -67,7 +67,9 @@ const obtenerUsuarioNombre = async (req, res) => {
     return res.status(200).json(usuario);
   } catch (err) {
     console.error("❌ Error obteniendo usuario por nombre:", err.message);
-    res.status(500).json({ error: "Error obteniendo usuario por nombre" });
+    return res
+      .status(500)
+      .json({ error: "Error obteniendo usuario por nombre" });
   }
 };
 
@@ -91,10 +93,10 @@ const crearUsuario = async (req, res) => {
     const usuarioCreado = await Usuario.crear({ nombre });
 
     console.log("✅ Usuario creado:", usuarioCreado);
-    res.json(usuarioCreado);
+    return res.json(usuarioCreado);
   } catch (err) {
     console.error("❌ Error insertando usuario:", err.message);
-    res.status(500).json({ error: "Error insertando usuario" });
+    return res.status(500).json({ error: "Error insertando usuario" });
   }
 };
 
@@ -121,10 +123,10 @@ const modificarEstadoUsuario = async (req, res) => {
     }
 
     console.log("✅ Usuario actualizado:", resultado);
-    res.json({ mensaje: "Usuario actualizado", usuario: resultado });
+    return res.json({ mensaje: "Usuario actualizado", usuario: resultado });
   } catch (err) {
     console.error("❌ Error modificando usuario:", err.message);
-    res.status(500).json({ error: "Error modificando usuario" });
+    return res.status(500).json({ error: "Error modificando usuario" });
   }
 };
 

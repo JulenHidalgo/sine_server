@@ -21,10 +21,10 @@ const obtenerProductos = async (req, res) => {
     console.log("🔍 Obteniendo todos los productos...");
     const productos = await Producto.obtenerTodos();
     console.log("✅ Productos obtenidos:", productos);
-    res.json(productos);
+    return res.json(productos);
   } catch (err) {
     console.error("❌ Error obteniendo productos:", err.message);
-    res.status(500).json({ error: "Error obteniendo productos" });
+    return res.status(500).json({ error: "Error obteniendo productos" });
   }
 };
 
@@ -54,10 +54,10 @@ const crearProducto = async (req, res) => {
     });
     console.log("✅ Producto creado:", productoCreado);
 
-    res.json(productoCreado);
+    return res.json(productoCreado);
   } catch (err) {
     console.error("❌ Error insertando producto:", err.message);
-    res.status(500).json({ error: "Error insertando producto" });
+    return res.status(500).json({ error: "Error insertando producto" });
   }
 };
 
@@ -94,10 +94,10 @@ const modificarObservacionesProducto = async (req, res) => {
     }
 
     console.log("✅ Producto actualizado correctamente.");
-    res.json({ mensaje: "Producto actualizado", producto: resultado });
+    return res.json({ mensaje: "Producto actualizado", producto: resultado });
   } catch (err) {
     console.error("❌ Error modificando producto:", err.message);
-    res.status(500).json({ error: "Error modificando producto" });
+    return res.status(500).json({ error: "Error modificando producto" });
   }
 };
 

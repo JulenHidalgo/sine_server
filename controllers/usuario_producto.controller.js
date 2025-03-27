@@ -21,10 +21,10 @@ const obtenerUsuario_productos = async (req, res) => {
     console.log("🔍 Obteniendo todas las entradas en usuario_producto...");
     const usuario_productos = await Usuario_producto.obtenerTodos();
     console.log("✅ Entradas obtenidas:", usuario_productos);
-    res.json(usuario_productos);
+    return res.json(usuario_productos);
   } catch (err) {
     console.error("❌ Error obteniendo usuario_productos:", err.message);
-    res
+    return res
       .status(500)
       .json({ error: "Error obteniendo las entradas de usuario_producto" });
   }
@@ -55,13 +55,13 @@ const obtenerUsuario_productoPorMatricula = async (req, res) => {
     }
 
     console.log("✅ Entradas encontradas:", usuario_productos);
-    res.json(usuario_productos);
+    return res.json(usuario_productos);
   } catch (err) {
     console.error(
       "❌ Error obteniendo usuario_producto por matrícula:",
       err.message
     );
-    res.status(500).json({
+    return res.status(500).json({
       error: "Error obteniendo las entradas de usuario_producto por matrícula",
     });
   }
@@ -94,10 +94,10 @@ const crearUsuario_producto = async (req, res) => {
     });
     console.log("✅ Usuario_producto creado:", usuario_productoCreado);
 
-    res.json(usuario_productoCreado);
+    return res.json(usuario_productoCreado);
   } catch (err) {
     console.error("❌ Error insertando usuario_producto:", err.message);
-    res.status(500).json({ error: "Error insertando usuario_producto" });
+    return res.status(500).json({ error: "Error insertando usuario_producto" });
   }
 };
 
