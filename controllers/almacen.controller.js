@@ -71,6 +71,8 @@ const obtenerAlmacenesActivos = async (req, res) => {
  */
 const obtenerAlmacenNombre = async (req, res) => {
   try {
+    const { nombre } = req.params;
+
     console.log("🔍 Obteniendo almacen por nombre");
     const almacen = await Almacen.obtenerPorNombre(nombre);
 
