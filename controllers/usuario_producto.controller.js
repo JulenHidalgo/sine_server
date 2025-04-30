@@ -1,3 +1,9 @@
+/**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
 // Importar el modelo Usuario_producto
 const Usuario_producto = require("../models/usuario_producto.model");
 

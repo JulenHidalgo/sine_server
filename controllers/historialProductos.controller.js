@@ -1,3 +1,9 @@
+/**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
 // Importar el modelo HistorialProductos
 const HistorialProductos = require("../models/historialProductos.model");
 

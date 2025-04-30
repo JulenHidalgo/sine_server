@@ -1,3 +1,9 @@
+/**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
 // Importar el modelo Almacen
 const Almacen = require("../models/almacen.model");
 

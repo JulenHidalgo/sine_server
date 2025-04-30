@@ -1,4 +1,10 @@
 /**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
+/**
  * Rutas para la gestión de almacenes.
  * @module routes/almacen
  */

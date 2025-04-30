@@ -1,4 +1,8 @@
 /**
+ *
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
  * Punto de entrada principal del servidor Express.
  * Configura middlewares, rutas y lanza el servidor.
  *

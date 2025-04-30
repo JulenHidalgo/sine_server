@@ -1,3 +1,9 @@
+/**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
 // Importar el modelo Obra
 const Obra = require("../models/obra.model");
 

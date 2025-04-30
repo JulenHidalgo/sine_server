@@ -1,4 +1,10 @@
 /**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
+/**
  * Rutas para la gestión de usuario-producto.
  * @module routes/usuario_producto
  */

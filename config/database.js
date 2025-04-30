@@ -1,4 +1,8 @@
 /**
+ *
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
  * Configuración de la conexión a la base de datos MySQL.
  * Utiliza un pool de conexiones en modo promesa para soporte con async/await.
  *

@@ -1,4 +1,10 @@
 /**
+ * Autor: JulenHidalgo
+ * GitHub: https://github.com/JulenHidalgo/
+ *
+ */
+
+/**
  * Rutas para el historial de productos.
  * @module routes/historialProductos
  */
