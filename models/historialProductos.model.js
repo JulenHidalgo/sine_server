@@ -132,7 +132,8 @@ class HistorialProductos {
     try {
       console.log("🔍 Buscando historial para id:", id);
 
-      const sql = "SELECT * FROM vista_historial_productos WHERE id = ?";
+      const sql =
+        "SELECT * FROM vista_historial_productos WHERE producto_id = ?";
       const [rows] = await db.query(sql, [id]);
 
       if (rows.length === 0) {

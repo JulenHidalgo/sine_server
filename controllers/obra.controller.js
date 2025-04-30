@@ -21,10 +21,10 @@ const obtenerObras = async (req, res) => {
     console.log("🔍 Obteniendo todas las obras...");
     const obras = await Obra.obtenerTodos();
     console.log("✅ Obras obtenidas:", obras);
-    res.json(obras);
+    return res.json(obras);
   } catch (err) {
     console.error("❌ Error obteniendo obras:", err.message);
-    res.status(500).json({ error: "Error obteniendo obras" });
+    return res.status(500).json({ error: "Error obteniendo obras" });
   }
 };
 
@@ -49,10 +49,10 @@ const crearObra = async (req, res) => {
     const obraCreada = await Obra.crear(new Obra(ot, descripcion));
     console.log("✅ Obra creada:", obraCreada);
 
-    res.json(obraCreada);
+    return res.json(obraCreada);
   } catch (err) {
     console.error("❌ Error insertando obra:", err.message);
-    res.status(500).json({ error: "Error insertando obra" });
+    return res.status(500).json({ error: "Error insertando obra" });
   }
 };
 

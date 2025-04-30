@@ -33,10 +33,10 @@ const obtenerTodos = async (req, res) => {
       });
     });
 
-    res.json(historial);
+    return res.json(historial);
   } catch (err) {
     console.error("❌ Error obteniendo historial de productos:", err.message);
-    res.status(500).json({ error: "Error obteniendo la información" });
+    return res.status(500).json({ error: "Error obteniendo la información" });
   }
 };
 
@@ -60,10 +60,10 @@ const obtenerPorId = async (req, res) => {
     }
 
     console.log("✅ Historial encontrado:", historial);
-    res.json(historial);
+    return res.json(historial);
   } catch (err) {
     console.error("❌ Error obteniendo historial por ID:", err.message);
-    res.status(500).json({ error: "Error obteniendo la información" });
+    return res.status(500).json({ error: "Error obteniendo la información" });
   }
 };
 
@@ -87,10 +87,10 @@ const obtenerPorMatricula = async (req, res) => {
     }
 
     console.log("✅ Historial encontrado:", historial);
-    res.json(historial);
+    return res.json(historial);
   } catch (err) {
     console.error("❌ Error obteniendo historial por matrícula:", err.message);
-    res.status(500).json({ error: "Error obteniendo la información" });
+    return res.status(500).json({ error: "Error obteniendo la información" });
   }
 };
 

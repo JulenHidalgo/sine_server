@@ -105,34 +105,31 @@ class Producto {
    * @returns {Promise<Object|null>} Producto actualizado o null si no se encontró.
    * @throws {Error} Si faltan datos o ocurre un error al modificar.
    */
-  static async modificar(producto) {
+  static async modificar(id, observaciones) {
     try {
       console.log(
-        "🔍 Modificando producto con matrícula:",
-        producto.matricula,
+        "🔍 Modificando producto con id:",
+        id,
         "Nuevas observaciones:",
-        producto.observaciones
+        observaciones
       );
 
-      if (!producto.id || !producto.matricula || !producto.observaciones) {
+      if (!id || !observaciones) {
         console.log("❌ Error: Datos insuficientes.");
         throw new Error("Faltan datos (observaciones).");
       }
 
       const sql =
         "UPDATE producto SET observaciones = CONCAT(observaciones, ?) WHERE id = ?";
-      const [result] = await db.query(sql, [
-        "; " + producto.observaciones,
-        producto.matricula,
-      ]);
+      const [result] = await db.query(sql, ["; " + observaciones, id]);
 
       if (result.affectedRows === 0) {
-        console.log("❌ Producto no encontrado:", producto.matricula);
+        console.log("❌ Producto no encontrado:", id);
         return null;
       }
 
       console.log("✅ Producto actualizado correctamente.");
-      return producto;
+      return result;
     } catch (err) {
       console.error("❌ Error modificando producto:", err.message);
       throw err;

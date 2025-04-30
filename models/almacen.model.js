@@ -80,6 +80,27 @@ class Almacen {
   }
 
   /**
+   * Obtiene el almacen que coincida con el nombre.
+   * @returns {Promise<Array>} Lista de almacenes activos.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
+  static async obtenerPorNombre(nombre) {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM almacen WHERE nombre = " + nombre
+      );
+      const [rows] = await db.query("SELECT * FROM almacen WHERE nombre = ?", [
+        nombre,
+      ]);
+      console.log("✅ Almacenes encontrados:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  /**
    * Comprueba si existe un almacén con el nombre proporcionado.
    * Si existe, cambia todos los productos del almacén actual al existente.
    * Si no existe, actualiza el nombre del almacén actual.

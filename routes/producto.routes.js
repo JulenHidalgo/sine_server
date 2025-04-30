@@ -21,12 +21,12 @@ const {
 router.get("/", obtenerProductos);
 
 /**
- * PUT /:matricula
+ * PUT /:id
  * Modifica las observaciones de un producto identificado por su matrícula.
- * @route PUT /producto/:matricula
+ * @route PUT /producto/:id
  * @param {string} matricula - Matrícula del producto.
  */
-router.put("/:matricula", modificarObservacionesProducto);
+router.put("/:id", modificarObservacionesProducto);
 
 /**
  * POST /

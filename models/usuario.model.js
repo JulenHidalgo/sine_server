@@ -42,6 +42,27 @@ class Usuario {
   }
 
   /**
+   * Obtiene el usuario que coincida con el nombre.
+   * @returns {Promise<Array>} Usuario que coincide con el nombre.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
+  static async obtenerPorNombre(nombre) {
+    try {
+      console.log(
+        "🔍 Ejecutando consulta: SELECT * FROM usuario WHERE nombre = " + nombre
+      );
+      const [rows] = await db.query("SELECT * FROM usuario WHERE nombre = ?", [
+        nombre,
+      ]);
+      console.log("✅ Usuario encontrado:", rows);
+      return rows;
+    } catch (err) {
+      console.error("❌ Error en la consulta SQL:", err.message);
+      throw err;
+    }
+  }
+
+  /**
    * Crea un nuevo usuario en la base de datos.
    * @param {Object} usuario - Objeto que contiene los datos del usuario.
    * @param {string} usuario.nombre - Nombre del usuario.
@@ -61,6 +82,7 @@ class Usuario {
       const [result] = await db.query(sql, [usuario.nombre]);
 
       usuario.id = result.insertId;
+      usuario.activo = 1;
       console.log("✅ Usuario insertado con ID:", usuario.id);
       return usuario;
     } catch (err) {
